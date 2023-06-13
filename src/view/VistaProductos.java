@@ -26,7 +26,7 @@ public class VistaProductos {
         String nombre = scanner.nextLine();
         System.out.print("Ingrese el precio del producto: ");
         double precio = scanner.nextDouble();
-        scanner.nextLine(); // Limpiar el buffer
+        scanner.nextLine();
         System.out.print("Ingrese la descripción del producto: ");
         String descripcion = scanner.nextLine();
         System.out.print("Ingrese el código de barras del producto: ");
@@ -54,7 +54,7 @@ public class VistaProductos {
         System.out.print("Ingrese el ID del producto a actualizar: ");
         int idActualizar = scanner.nextInt();
         
-        scanner.nextLine(); // Consumir el carácter de nueva línea
+        scanner.nextLine();
         
         System.out.print("Ingrese el nuevo nombre del producto (dejar vacío para mantener el valor actual): ");
         String nuevoNombre = scanner.nextLine();

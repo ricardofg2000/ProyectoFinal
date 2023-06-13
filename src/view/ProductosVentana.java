@@ -22,7 +22,7 @@ public class ProductosVentana extends JFrame {
     private JButton btnAgregarCarrito;
     private JButton btnVerCarrito;
     private CarritoDeCompra carritoDeCompra;
-    private JButton btnHacerPedido; // Nuevo botón agregado
+    private JButton btnHacerPedido;
 
     public ProductosVentana() {
         setResizable(false);
@@ -70,7 +70,7 @@ public class ProductosVentana extends JFrame {
 
         String[] columnas = {"ID", "Nombre", "Precio", "Descripción", "Código de Barras", "Cantidad"};
 
-        DefaultTableModel tableModel = new DefaultTableModel(columnas, 0) {
+        DefaultTableModel tabla = new DefaultTableModel(columnas, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 5) {
@@ -88,26 +88,26 @@ public class ProductosVentana extends JFrame {
         for (Producto producto : productos) {
             Object[] fila = {producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getDescripcion(),
                     producto.getCodigoBarras(), 0};
-            tableModel.addRow(fila);
+            tabla.addRow(fila);
         }
 
-        tableProductos.setModel(tableModel);
+        tableProductos.setModel(tabla);
     }
 
     private void configurarBotonAgregarCarrito() {
         btnAgregarCarrito.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DefaultTableModel tableModel = (DefaultTableModel) tableProductos.getModel();
-                int rowCount = tableModel.getRowCount();
+                DefaultTableModel tabla = (DefaultTableModel) tableProductos.getModel();
+                int rowCount = tabla.getRowCount();
                 for (int i = 0; i < rowCount; i++) {
-                    int cantidad = (int) tableModel.getValueAt(i, 5);
+                    int cantidad = (int) tabla.getValueAt(i, 5);
                     if (cantidad > 0) {
-                        int id = (int) tableModel.getValueAt(i, 0);
-                        String nombre = (String) tableModel.getValueAt(i, 1);
-                        double precio = (double) tableModel.getValueAt(i, 2);
-                        String descripcion = (String) tableModel.getValueAt(i, 3);
-                        String codigoBarras = (String) tableModel.getValueAt(i, 4);
+                        int id = (int) tabla.getValueAt(i, 0);
+                        String nombre = (String) tabla.getValueAt(i, 1);
+                        double precio = (double) tabla.getValueAt(i, 2);
+                        String descripcion = (String) tabla.getValueAt(i, 3);
+                        String codigoBarras = (String) tabla.getValueAt(i, 4);
 
                         Producto producto = new Producto(id, nombre, precio, descripcion, codigoBarras);
                         carritoDeCompra.agregarProducto(producto, cantidad);
@@ -132,8 +132,8 @@ public class ProductosVentana extends JFrame {
                 JPanel panelCarrito = new JPanel(new BorderLayout());
                 ventanaCarrito.setContentPane(panelCarrito);
 
-                JTable tableCarrito = new JTable();
-                DefaultTableModel tableModel = new DefaultTableModel(
+                JTable tablaCarrito = new JTable();
+                DefaultTableModel tabla = new DefaultTableModel(
                         new String[]{"Nombre", "Cantidad"}, 0);
 
                 Map<Producto, Integer> productosEnCarrito = carritoDeCompra.getProductos();
@@ -141,12 +141,12 @@ public class ProductosVentana extends JFrame {
                     Producto producto = entry.getKey();
                     int cantidad = entry.getValue();
                     Object[] fila = {producto.getNombre(), cantidad};
-                    tableModel.addRow(fila);
+                    tabla.addRow(fila);
                 }
 
-                tableCarrito.setModel(tableModel);
+                tablaCarrito.setModel(tabla);
 
-                JScrollPane scrollPaneCarrito = new JScrollPane(tableCarrito);
+                JScrollPane scrollPaneCarrito = new JScrollPane(tablaCarrito);
                 panelCarrito.add(scrollPaneCarrito, BorderLayout.CENTER);
 
                 JLabel lblCantidadProductos = new JLabel("Cantidad de Productos: " + carritoDeCompra.getCantidadProductos());

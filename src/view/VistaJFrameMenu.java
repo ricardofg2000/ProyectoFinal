@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class VistaJFrame extends JFrame {
+public class VistaJFrameMenu extends JFrame {
 
     private JTable tableProductos;
 
@@ -20,7 +20,7 @@ public class VistaJFrame extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    VistaJFrame frame = new VistaJFrame();
+                    VistaJFrameMenu frame = new VistaJFrameMenu();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -29,7 +29,7 @@ public class VistaJFrame extends JFrame {
         });
     }
 
-    public VistaJFrame() {
+    public VistaJFrameMenu() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 767, 541);
         JPanel contentPane = new JPanel();
@@ -38,63 +38,50 @@ public class VistaJFrame extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JPanel panelMenu = new JPanel();
-        panelMenu.setBounds(5, 5, 741, 286);
-        contentPane.add(panelMenu);
-        panelMenu.setLayout(null);
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
 
-        JLabel lblTitulo = new JLabel("Menú de Productos");
-        lblTitulo.setBounds(0, 0, 741, 49);
-        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 24));
-        panelMenu.add(lblTitulo);
+        JMenu mnProductos = new JMenu("Productos");
+        menuBar.add(mnProductos);
 
-        JButton btnListarProductos = new JButton("Listado de Productos");
-        btnListarProductos.setBounds(41, 60, 666, 38);
-        btnListarProductos.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        panelMenu.add(btnListarProductos);
+        JMenuItem mntmListarProductos = new JMenuItem("Listado de Productos");
+        mnProductos.add(mntmListarProductos);
 
-        JButton btnAgregarProducto = new JButton("Agregar Producto");
-        btnAgregarProducto.setBounds(41, 109, 666, 38);
-        btnAgregarProducto.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        panelMenu.add(btnAgregarProducto);
+        JMenuItem mntmAgregarProducto = new JMenuItem("Agregar Producto");
+        mnProductos.add(mntmAgregarProducto);
 
-        JButton btnEliminarProducto = new JButton("Eliminar Producto");
-        btnEliminarProducto.setBounds(41, 158, 666, 38);
-        btnEliminarProducto.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        panelMenu.add(btnEliminarProducto);
+        JMenuItem mntmEliminarProducto = new JMenuItem("Eliminar Producto");
+        mnProductos.add(mntmEliminarProducto);
 
-        JButton btnActualizarProducto = new JButton("Actualizar Producto");
-        btnActualizarProducto.setBounds(41, 207, 666, 38);
-        btnActualizarProducto.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        panelMenu.add(btnActualizarProducto);
+        JMenuItem mntmActualizarProducto = new JMenuItem("Actualizar Producto");
+        mnProductos.add(mntmActualizarProducto);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(5, 291, 741, 206);
+        scrollPane.setBounds(5, 5, 741, 497);
         contentPane.add(scrollPane);
 
         tableProductos = new JTable();
         scrollPane.setViewportView(tableProductos);
 
-        btnListarProductos.addActionListener(new ActionListener() {
+        mntmListarProductos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 listarProductos();
             }
         });
 
-        btnAgregarProducto.addActionListener(new ActionListener() {
+        mntmAgregarProducto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 agregarProducto();
             }
         });
 
-        btnEliminarProducto.addActionListener(new ActionListener() {
+        mntmEliminarProducto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 eliminarProducto();
             }
         });
 
-        btnActualizarProducto.addActionListener(new ActionListener() {
+        mntmActualizarProducto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 actualizarProducto();
             }

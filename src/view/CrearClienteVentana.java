@@ -12,11 +12,11 @@ import java.awt.event.ActionListener;
 public class CrearClienteVentana extends JFrame {
 
     private JPanel contentPane;
-    private JTextField textFieldNombre;
-    private JTextField textFieldUsuario;
-    private JPasswordField passwordField;
-    private JTextField textFieldTelefono;
-    private JTextField textFieldDireccion;
+    private JTextField campoTextoNombre;
+    private JTextField campoTextoUsuario;
+    private JPasswordField campoContrasena;
+    private JTextField campoTextoTelefono;
+    private JTextField campoTextoDireccion;
 
     public CrearClienteVentana() {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,36 +35,36 @@ public class CrearClienteVentana extends JFrame {
         JLabel lblNombre = new JLabel("Nombre:");
         panel.add(lblNombre);
 
-        textFieldNombre = new JTextField();
-        panel.add(textFieldNombre);
-        textFieldNombre.setColumns(10);
+        campoTextoNombre = new JTextField();
+        panel.add(campoTextoNombre);
+        campoTextoNombre.setColumns(10);
 
         JLabel lblUsuario = new JLabel("Usuario:");
         panel.add(lblUsuario);
 
-        textFieldUsuario = new JTextField();
-        panel.add(textFieldUsuario);
-        textFieldUsuario.setColumns(10);
+        campoTextoUsuario = new JTextField();
+        panel.add(campoTextoUsuario);
+        campoTextoUsuario.setColumns(10);
 
         JLabel lblContrasena = new JLabel("Contraseña:");
         panel.add(lblContrasena);
 
-        passwordField = new JPasswordField();
-        panel.add(passwordField);
+        campoContrasena = new JPasswordField();
+        panel.add(campoContrasena);
 
         JLabel lblTelefono = new JLabel("Teléfono:");
         panel.add(lblTelefono);
 
-        textFieldTelefono = new JTextField();
-        panel.add(textFieldTelefono);
-        textFieldTelefono.setColumns(10);
+        campoTextoTelefono = new JTextField();
+        panel.add(campoTextoTelefono);
+        campoTextoTelefono.setColumns(10);
 
         JLabel lblDireccion = new JLabel("Dirección:");
         panel.add(lblDireccion);
 
-        textFieldDireccion = new JTextField();
-        panel.add(textFieldDireccion);
-        textFieldDireccion.setColumns(10);
+        campoTextoDireccion = new JTextField();
+        panel.add(campoTextoDireccion);
+        campoTextoDireccion.setColumns(10);
 
         JButton btnCrear = new JButton("Crear");
         panel.add(btnCrear);
@@ -74,16 +74,14 @@ public class CrearClienteVentana extends JFrame {
 
         btnCrear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String nombre = textFieldNombre.getText();
-                String usuario = textFieldUsuario.getText();
-                String contrasena = new String(passwordField.getPassword());
-                String telefono = textFieldTelefono.getText();
-                String direccion = textFieldDireccion.getText();
+                String nombre = campoTextoNombre.getText();
+                String usuario = campoTextoUsuario.getText();
+                String contrasena = new String(campoContrasena.getPassword());
+                String telefono = campoTextoTelefono.getText();
+                String direccion = campoTextoDireccion.getText();
 
                 if (ClienteController.existeUsuario(usuario)) {
                     JOptionPane.showMessageDialog(contentPane, "El usuario ya existe. Por favor, elija otro nombre de usuario.");
-                    textFieldUsuario.requestFocus();
-                    textFieldUsuario.selectAll();
                 } else {
                     ClienteController.crearCliente(nombre, usuario, contrasena, telefono, direccion);
                     JOptionPane.showMessageDialog(contentPane, "Cliente creado exitosamente.");

@@ -14,7 +14,6 @@ public class Principal {
         int opcion;
 
         do {
-            // Mostrar opciones del menú
             System.out.println("********** Menú de Productos **********");
             System.out.println("1. Listado de Productos");
             System.out.println("2. Agregar Producto");
@@ -27,23 +26,18 @@ public class Principal {
 
             switch (opcion) {
                 case 1:
-                    // Listado de Productos
                     VistaProductos.listadoProductos();
                     break;
                 case 2:
-                    // Agregar Producto
                     VistaProductos.agregarProducto();
                     break;
                 case 3:
-                    // Eliminar Producto
                     VistaProductos.eliminarProducto();
                     break;
                 case 4:
-                    // Actualizar Producto
                     VistaProductos.actualizarProducto();
                     break;
                 case 0:
-                    // Salir
                     System.out.println("\nSaliendo del programa...");
                     break;
                 default:

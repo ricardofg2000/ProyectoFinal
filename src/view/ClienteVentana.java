@@ -12,8 +12,8 @@ import java.awt.event.ActionListener;
 public class ClienteVentana extends JFrame {
 
     private JPanel contentPane;
-    private JTextField textFieldUsuario;
-    private JPasswordField passwordField;
+    private JTextField campoTextoUsuario;
+    private JPasswordField campoTextoContrasena;
     private JButton btnIniciarSesion;
 
     public static void main(String[] args) {
@@ -32,8 +32,8 @@ public class ClienteVentana extends JFrame {
     public ClienteVentana() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(443, 325); // Tamaño fijo de la ventana
-        setLocationRelativeTo(null); // Centrar la ventana en la pantalla
+        setSize(443, 325);
+        setLocationRelativeTo(null);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
         setContentPane(contentPane);
@@ -49,19 +49,19 @@ public class ClienteVentana extends JFrame {
         lblUsuario.setBounds(53, 69, 96, 30);
         panel.add(lblUsuario);
 
-        textFieldUsuario = new JTextField();
-        textFieldUsuario.setBounds(139, 69, 187, 30);
-        textFieldUsuario.setColumns(20); // Tamaño fijo del cuadro de texto
-        panel.add(textFieldUsuario);
+        campoTextoUsuario = new JTextField();
+        campoTextoUsuario.setBounds(139, 69, 187, 30);
+        campoTextoUsuario.setColumns(20); // Tamaño fijo del cuadro de texto
+        panel.add(campoTextoUsuario);
 
         JLabel lblContrasena = new JLabel("Contraseña:");
         lblContrasena.setBounds(53, 110, 96, 30);
         panel.add(lblContrasena);
 
-        passwordField = new JPasswordField();
-        passwordField.setBounds(139, 110, 187, 30);
-        passwordField.setColumns(20); // Tamaño fijo del cuadro de texto
-        panel.add(passwordField);
+        campoTextoContrasena = new JPasswordField();
+        campoTextoContrasena.setBounds(139, 110, 187, 30);
+        campoTextoContrasena.setColumns(20); // Tamaño fijo del cuadro de texto
+        panel.add(campoTextoContrasena);
 
         JPanel panelBoton = new JPanel();
         panelBoton.setBounds(-19, 166, 428, 64);
@@ -84,8 +84,8 @@ public class ClienteVentana extends JFrame {
 
         btnIniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String usuario = textFieldUsuario.getText();
-                String contrasena = new String(passwordField.getPassword());
+                String usuario = campoTextoUsuario.getText();
+                String contrasena = new String(campoTextoContrasena.getPassword());
 
                 if (ClienteController.validarCredenciales(usuario, contrasena)) {
                     mostrarVentanaProductos();
@@ -104,9 +104,8 @@ public class ClienteVentana extends JFrame {
     }
 
     private void mostrarVentanaProductos() {
-        dispose(); // Cerrar la ventana actual
+        dispose();
 
-        // Crear una nueva instancia de la ventana de productos
         ProductosVentana productosVentana = new ProductosVentana();
         productosVentana.setVisible(true);
     }
