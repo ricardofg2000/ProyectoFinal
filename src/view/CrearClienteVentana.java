@@ -76,7 +76,7 @@ public class CrearClienteVentana extends JFrame {
                 String contrasena = new String(passwordField.getPassword());
                 String telefono = textFieldTelefono.getText();
                 String direccion = textFieldDireccion.getText();
-
+ 
                 if (ClienteDAO.existeUsuario(usuario)) {
                     JOptionPane.showMessageDialog(contentPane, "El usuario ya existe. Por favor, elija otro nombre de usuario.");
                     textFieldUsuario.requestFocus();
