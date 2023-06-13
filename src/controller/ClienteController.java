@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ClienteDAO {
+public class ClienteController {
 
 	public static boolean validarCredenciales(String usuario, String contrasena) {
 		boolean valid = false;

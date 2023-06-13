@@ -3,7 +3,7 @@ package view;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import controller.ClienteDAO;
+import controller.ClienteController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -69,6 +69,9 @@ public class CrearClienteVentana extends JFrame {
         JButton btnCrear = new JButton("Crear");
         panel.add(btnCrear);
 
+        JButton btnVolver = new JButton("Volver");
+        panel.add(btnVolver);
+
         btnCrear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String nombre = textFieldNombre.getText();
@@ -76,16 +79,22 @@ public class CrearClienteVentana extends JFrame {
                 String contrasena = new String(passwordField.getPassword());
                 String telefono = textFieldTelefono.getText();
                 String direccion = textFieldDireccion.getText();
- 
-                if (ClienteDAO.existeUsuario(usuario)) {
+
+                if (ClienteController.existeUsuario(usuario)) {
                     JOptionPane.showMessageDialog(contentPane, "El usuario ya existe. Por favor, elija otro nombre de usuario.");
                     textFieldUsuario.requestFocus();
                     textFieldUsuario.selectAll();
                 } else {
-                    ClienteDAO.crearCliente(nombre, usuario, contrasena, telefono, direccion);
+                    ClienteController.crearCliente(nombre, usuario, contrasena, telefono, direccion);
                     JOptionPane.showMessageDialog(contentPane, "Cliente creado exitosamente.");
                     dispose();
                 }
+            }
+        });
+
+        btnVolver.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
             }
         });
     }

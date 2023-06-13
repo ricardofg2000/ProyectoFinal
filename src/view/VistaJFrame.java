@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controller.ProductosController;
 import model.Producto;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class VistaJFrame extends JFrame {
 
-    private static JTextArea textArea;
+    private JTable tableProductos;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -29,10 +30,10 @@ public class VistaJFrame extends JFrame {
     }
 
     public VistaJFrame() {
-    	setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 767, 541);
         JPanel contentPane = new JPanel();
+        setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
@@ -68,15 +69,12 @@ public class VistaJFrame extends JFrame {
         btnActualizarProducto.setFont(new Font("Tahoma", Font.PLAIN, 18));
         panelMenu.add(btnActualizarProducto);
 
-        textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        textArea.setRows(10);
-        textArea.setColumns(10);
-        JScrollPane scrollPane = new JScrollPane(textArea);
+        JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(5, 291, 741, 206);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         contentPane.add(scrollPane);
+
+        tableProductos = new JTable();
+        scrollPane.setViewportView(tableProductos);
 
         btnListarProductos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -103,15 +101,32 @@ public class VistaJFrame extends JFrame {
         });
     }
 
-    public static void listarProductos() {
-        textArea.setText("Listado de Productos:\n");
+    public void listarProductos() {
         List<Producto> productos = ProductosController.listadoProductos();
+
+        // Definir las columnas de la tabla
+        String[] columnas = {"ID", "Nombre", "Precio", "Descripción", "Código de Barras"};
+
+        // Crear el modelo de la tabla con las columnas
+        DefaultTableModel tableModel = new DefaultTableModel(columnas, 0);
+
+        // Agregar los productos al modelo de la tabla
         for (Producto producto : productos) {
-            textArea.append(producto.toString() + "\n");
+            Object[] fila = {
+                producto.getId(),
+                producto.getNombre(),
+                producto.getPrecio(),
+                producto.getDescripcion(),
+                producto.getCodigoBarras()
+            };
+            tableModel.addRow(fila);
         }
+
+        // Establecer el modelo en la tabla
+        tableProductos.setModel(tableModel);
     }
 
-    public static void agregarProducto() {
+    public void agregarProducto() {
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del producto:");
         String precioStr = JOptionPane.showInputDialog("Ingrese el precio del producto:");
         double precio = Double.parseDouble(precioStr);
@@ -126,19 +141,19 @@ public class VistaJFrame extends JFrame {
 
         ProductosController.agregarProducto(nuevoProducto);
 
-        textArea.setText("Producto agregado correctamente:\n" + nuevoProducto.toString());
+        listarProductos();
     }
 
-    public static void eliminarProducto() {
+    public void eliminarProducto() {
         String idEliminarStr = JOptionPane.showInputDialog("Ingrese el ID del producto a eliminar:");
         int idEliminar = Integer.parseInt(idEliminarStr);
 
         ProductosController.borrarProducto(idEliminar);
 
-        textArea.setText("Producto eliminado correctamente:\nID: " + idEliminar);
+        listarProductos();
     }
 
-    public static void actualizarProducto() {
+    public void actualizarProducto() {
         String idActualizarStr = JOptionPane.showInputDialog("Ingrese el ID del producto a actualizar:");
         int idActualizar = Integer.parseInt(idActualizarStr);
 

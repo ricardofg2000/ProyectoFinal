@@ -3,8 +3,7 @@ package view;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import bdm.ConexionBD;
-import controller.ClienteDAO;
+import controller.ClienteController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +15,6 @@ public class ClienteVentana extends JFrame {
     private JTextField textFieldUsuario;
     private JPasswordField passwordField;
     private JButton btnIniciarSesion;
-    private JButton btnNuevoUsuario;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -35,6 +33,7 @@ public class ClienteVentana extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(443, 325); // Tamaño fijo de la ventana
+        setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
         setContentPane(contentPane);
@@ -69,11 +68,11 @@ public class ClienteVentana extends JFrame {
         panelBoton.setLayout(null);
 
         btnIniciarSesion = new JButton("Iniciar Sesión");
-        btnIniciarSesion.setBounds(167, 5, 95, 23);
+        btnIniciarSesion.setBounds(154, 7, 125, 23);
         panelBoton.add(btnIniciarSesion);
         panel.add(panelBoton);
 
-        btnNuevoUsuario = new JButton("¿Nuevo? Crea una cuenta");
+        JButton btnNuevoUsuario = new JButton("¿Nuevo? Crea una cuenta");
         btnNuevoUsuario.setBounds(115, 41, 198, 23);
         panelBoton.add(btnNuevoUsuario);
 
@@ -88,7 +87,7 @@ public class ClienteVentana extends JFrame {
                 String usuario = textFieldUsuario.getText();
                 String contrasena = new String(passwordField.getPassword());
 
-                if (ClienteDAO.validarCredenciales(usuario, contrasena)) {
+                if (ClienteController.validarCredenciales(usuario, contrasena)) {
                     mostrarVentanaProductos();
                 } else {
                     JOptionPane.showMessageDialog(contentPane, "Credenciales inválidas. Intente nuevamente.");
@@ -100,19 +99,15 @@ public class ClienteVentana extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 CrearClienteVentana crearClienteVentana = new CrearClienteVentana();
                 crearClienteVentana.setVisible(true);
-                dispose();
             }
         });
     }
 
     private void mostrarVentanaProductos() {
-        // Código para mostrar la ventana de productos
-        // Aquí puedes implementar la lógica necesaria para mostrar la ventana con los productos disponibles
-        // Puedes utilizar una nueva clase de ventana o hacer modificaciones a esta misma clase para agregar los componentes necesarios
-        // Por ejemplo, puedes crear una nueva instancia de la clase ProductosVentana y hacerla visible:
+        dispose(); // Cerrar la ventana actual
+
+        // Crear una nueva instancia de la ventana de productos
         ProductosVentana productosVentana = new ProductosVentana();
         productosVentana.setVisible(true);
-        // También puedes cerrar la ventana actual si ya no es necesaria:
-        dispose();
     }
 }

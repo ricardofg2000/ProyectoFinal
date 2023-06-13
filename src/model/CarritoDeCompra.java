@@ -1,40 +1,51 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CarritoDeCompra {
-    private Cliente cliente;
-    private List<Producto> productos;
-    private List<Integer> cantidades;
+	private Map<Producto, Integer> productos;
 
-    public CarritoDeCompra(Cliente cliente) {
-        this.cliente = cliente;
-        productos = new ArrayList<>();
-        cantidades = new ArrayList<>();
-    }
+	public CarritoDeCompra() {
+		productos = new HashMap<>();
+	}
 
-    public void agregarProducto(Producto producto, int cantidad) {
-        productos.add(producto);
-        cantidades.add(cantidad);
-    }
+	public void agregarProducto(Producto producto, int cantidad) {
+		int cantidadExistente = productos.getOrDefault(producto, 0);
+		int cantidadTotal = cantidadExistente + cantidad;
+		productos.put(producto, cantidadTotal);
 
-    public void eliminarProducto(Producto producto) {
-        int index = productos.indexOf(producto);
-        if (index != -1) {
-            productos.remove(index);
-            cantidades.remove(index);
-        }
-    }
+		System.out.println("Producto agregado: " + producto.getNombre() + ", Cantidad: " + cantidadTotal);
+	}
 
-    public double calcularTotal() {
-        double total = 0.0;
-        for (int i = 0; i < productos.size(); i++) {
-            Producto producto = productos.get(i);
-            int cantidad = cantidades.get(i);
-            total += producto.getPrecio() * cantidad;
-        }
-        return total;
-    }
+	public void removerProducto(Producto producto, int cantidad) {
+		int cantidadExistente = productos.getOrDefault(producto, 0);
+		if (cantidadExistente > cantidad) {
+			productos.put(producto, cantidadExistente - cantidad);
+		} else {
+			productos.remove(producto);
+		}
+	}
 
+	public Map<Producto, Integer> getProductos() {
+		return productos;
+	}
+
+	public int getCantidadProductos() {
+		int cantidadTotal = 0;
+		for (int cantidad : productos.values()) {
+			cantidadTotal += cantidad;
+		}
+		return cantidadTotal;
+	}
+
+	public double getTotal() {
+		double total = 0;
+		for (Map.Entry<Producto, Integer> entry : productos.entrySet()) {
+			Producto producto = entry.getKey();
+			int cantidad = entry.getValue();
+			total += producto.getPrecio() * cantidad;
+		}
+		return total;
+	}
 }
