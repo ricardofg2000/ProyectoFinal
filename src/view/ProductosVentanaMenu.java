@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controller.DetallePedidoController;
+import controller.PedidosController;
 import controller.ProductosController;
 import model.CarritoDeCompra;
 import model.Producto;
@@ -19,8 +21,9 @@ public class ProductosVentanaMenu extends JFrame {
     private JPanel contentPane;
     private JTable tableProductos;
     private CarritoDeCompra carritoDeCompra;
+    private int idCliente;
 
-    public ProductosVentanaMenu() {
+    public ProductosVentanaMenu(int id_cliente) {
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(750, 568);
@@ -44,9 +47,10 @@ public class ProductosVentanaMenu extends JFrame {
         scrollPane.setViewportView(tableProductos);
 
         carritoDeCompra = new CarritoDeCompra();
+        this.idCliente = id_cliente;
 
         cargarProductos();
-        configurarMenus();
+        configurarMenus(id_cliente);
         configurarBotonAgregarCarrito();
     }
 
@@ -79,7 +83,7 @@ public class ProductosVentanaMenu extends JFrame {
         tableProductos.setModel(tabla);
     }
 
-    private void configurarMenus() {
+    private void configurarMenus(int id_cliente) {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
 
@@ -105,7 +109,7 @@ public class ProductosVentanaMenu extends JFrame {
         mntmHacerPedido.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                hacerPedido();
+                hacerPedido(id_cliente);
             }
         });
     }
@@ -152,26 +156,27 @@ public class ProductosVentanaMenu extends JFrame {
         DefaultTableModel tabla = new DefaultTableModel(
                 new String[]{"Nombre", "Cantidad"}, 0);
 
-        Map<Producto, Integer> productosEnCarrito = carritoDeCompra.getProductos();
-        for (Map.Entry<Producto, Integer> entry : productosEnCarrito.entrySet()) {
-            Producto producto = entry.getKey();
-            int cantidad = entry.getValue();
+        List<Producto> productosEnCarrito = carritoDeCompra.getProductos();
+        for (Producto producto : productosEnCarrito) {
+            int cantidad = carritoDeCompra.getCantidad(producto);
             Object[] fila = {producto.getNombre(), cantidad};
             tabla.addRow(fila);
         }
+
+
 
         tablaCarrito.setModel(tabla);
 
         JScrollPane scrollPaneCarrito = new JScrollPane(tablaCarrito);
         panelCarrito.add(scrollPaneCarrito, BorderLayout.CENTER);
 
-        JLabel lblCantidadProductos = new JLabel("Cantidad de Productos: " + carritoDeCompra.getCantidadProductos());
+        JLabel lblCantidadProductos = new JLabel("Cantidad de Productos: " + carritoDeCompra.getCantidadTotal());
         panelCarrito.add(lblCantidadProductos, BorderLayout.SOUTH);
 
         ventanaCarrito.setVisible(true);
     }
 
-    private void hacerPedido() {
+    private void hacerPedido(int id_cliente) {
         JFrame ventanaPedido = new JFrame();
         ventanaPedido.setTitle("Pedido");
         ventanaPedido.setSize(400, 300);
@@ -185,13 +190,13 @@ public class ProductosVentanaMenu extends JFrame {
         DefaultTableModel tableModel = new DefaultTableModel(
                 new String[]{"Producto", "Cantidad"}, 0);
 
-        Map<Producto, Integer> productosEnCarrito = carritoDeCompra.getProductos();
-        for (Map.Entry<Producto, Integer> entry : productosEnCarrito.entrySet()) {
-            Producto producto = entry.getKey();
-            int cantidad = entry.getValue();
+        List<Producto> productosEnCarrito = carritoDeCompra.getProductos();
+        for (Producto producto : productosEnCarrito) {
+            int cantidad = carritoDeCompra.getCantidad(producto);
             Object[] fila = {producto.getNombre(), cantidad};
             tableModel.addRow(fila);
         }
+
 
         tablePedido.setModel(tableModel);
 
@@ -201,21 +206,33 @@ public class ProductosVentanaMenu extends JFrame {
         JLabel lblPrecioTotal = new JLabel("Precio Total: " + carritoDeCompra.getTotal() + "€");
         panelPedido.add(lblPrecioTotal, BorderLayout.SOUTH);
 
-        ventanaPedido.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ProductosVentanaMenu frame = new ProductosVentanaMenu();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        JButton btnTramitarPedido = new JButton("Tramitar Pedido");
+        btnTramitarPedido.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirmacion = JOptionPane.showConfirmDialog(ProductosVentanaMenu.this,
+                        "¿Desea tramitar el pedido?",
+                        "Confirmación de pedido", JOptionPane.YES_NO_OPTION);
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    int idPedido = PedidosController.agregarPedido(id_cliente);
+                    if (idPedido != -1) {
+                        List<Producto> productosEnCarrito = carritoDeCompra.getProductos();
+                        for (Producto producto : productosEnCarrito) {
+                            int cantidad = carritoDeCompra.getCantidad(producto);
+                            DetallePedidoController.agregarDetallePedido(idPedido, carritoDeCompra);
+                        }
+                        JOptionPane.showMessageDialog(ProductosVentanaMenu.this, "Pedido tramitado con éxito.");
+                        ventanaPedido.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(ProductosVentanaMenu.this, "Error al agregar el pedido. Intente nuevamente.");
+                    }
                 }
             }
         });
+
+
+        panelPedido.add(btnTramitarPedido, BorderLayout.NORTH);
+
+        ventanaPedido.setVisible(true);
     }
 }
-
-       

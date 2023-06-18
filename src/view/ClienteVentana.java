@@ -51,7 +51,7 @@ public class ClienteVentana extends JFrame {
 
         campoTextoUsuario = new JTextField();
         campoTextoUsuario.setBounds(139, 69, 187, 30);
-        campoTextoUsuario.setColumns(20); // Tamaño fijo del cuadro de texto
+        campoTextoUsuario.setColumns(20);
         panel.add(campoTextoUsuario);
 
         JLabel lblContrasena = new JLabel("Contraseña:");
@@ -60,7 +60,7 @@ public class ClienteVentana extends JFrame {
 
         campoTextoContrasena = new JPasswordField();
         campoTextoContrasena.setBounds(139, 110, 187, 30);
-        campoTextoContrasena.setColumns(20); // Tamaño fijo del cuadro de texto
+        campoTextoContrasena.setColumns(20);
         panel.add(campoTextoContrasena);
 
         JPanel panelBoton = new JPanel();
@@ -88,7 +88,8 @@ public class ClienteVentana extends JFrame {
                 String contrasena = new String(campoTextoContrasena.getPassword());
 
                 if (ClienteController.validarCredenciales(usuario, contrasena)) {
-                    mostrarVentanaProductos();
+                    int idCliente = ClienteController.obtenerIdCliente(usuario);
+                    mostrarVentanaProductos(idCliente);
                 } else {
                     JOptionPane.showMessageDialog(contentPane, "Credenciales inválidas. Intente nuevamente.");
                 }
@@ -103,10 +104,10 @@ public class ClienteVentana extends JFrame {
         });
     }
 
-    private void mostrarVentanaProductos() {
+    private void mostrarVentanaProductos(int idCliente) {
         dispose();
 
-        ProductosVentana productosVentana = new ProductosVentana();
+        ProductosVentanaMenu productosVentana = new ProductosVentanaMenu(idCliente);
         productosVentana.setVisible(true);
     }
 }

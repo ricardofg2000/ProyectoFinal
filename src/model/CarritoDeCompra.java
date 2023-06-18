@@ -1,51 +1,70 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarritoDeCompra {
-	private Map<Producto, Integer> productos;
+    private List<Producto> productos;
+    private List<Integer> cantidades;
 
-	public CarritoDeCompra() {
-		productos = new HashMap<>();
-	}
+    public CarritoDeCompra() {
+        productos = new ArrayList<>();
+        cantidades = new ArrayList<>();
+    }
 
-	public void agregarProducto(Producto producto, int cantidad) {
-		int cantidadExistente = productos.getOrDefault(producto, 0);
-		int cantidadTotal = cantidadExistente + cantidad;
-		productos.put(producto, cantidadTotal);
+    public void agregarProducto(Producto producto, int cantidad) {
+        int indice = productos.indexOf(producto);
+        if (indice != -1) {
+            int cantidadExistente = cantidades.get(indice);
+            cantidades.set(indice, cantidadExistente + cantidad);
+        } else {
+            productos.add(producto);
+            cantidades.add(cantidad);
+        }
 
-		System.out.println("Producto agregado: " + producto.getNombre() + ", Cantidad: " + cantidadTotal);
-	}
+        System.out.println("Producto agregado: " + producto.getNombre() + ", Cantidad: " + getCantidad(producto));
+    }
 
-	public void removerProducto(Producto producto, int cantidad) {
-		int cantidadExistente = productos.getOrDefault(producto, 0);
-		if (cantidadExistente > cantidad) {
-			productos.put(producto, cantidadExistente - cantidad);
-		} else {
-			productos.remove(producto);
-		}
-	}
+    public void removerProducto(Producto producto, int cantidad) {
+        int indice = productos.indexOf(producto);
+        if (indice != -1) {
+            int cantidadExistente = cantidades.get(indice);
+            if (cantidadExistente > cantidad) {
+                cantidades.set(indice, cantidadExistente - cantidad);
+            } else {
+                productos.remove(indice);
+                cantidades.remove(indice);
+            }
+        }
+    }
 
-	public Map<Producto, Integer> getProductos() {
-		return productos;
-	}
+    public List<Producto> getProductos() {
+        return productos;
+    }
 
-	public int getCantidadProductos() {
-		int cantidadTotal = 0;
-		for (int cantidad : productos.values()) {
-			cantidadTotal += cantidad;
-		}
-		return cantidadTotal;
-	}
+    public int getCantidad(Producto producto) {
+        int indice = productos.indexOf(producto);
+        if (indice != -1) {
+            return cantidades.get(indice);
+        }
+        return 0;
+    }
 
-	public double getTotal() {
-		double total = 0;
-		for (Map.Entry<Producto, Integer> entry : productos.entrySet()) {
-			Producto producto = entry.getKey();
-			int cantidad = entry.getValue();
-			total += producto.getPrecio() * cantidad;
-		}
-		return total;
-	}
+    public int getCantidadTotal() {
+        int cantidadTotal = 0;
+        for (int cantidad : cantidades) {
+            cantidadTotal += cantidad;
+        }
+        return cantidadTotal;
+    }
+
+    public double getTotal() {
+        double total = 0;
+        for (int i = 0; i < productos.size(); i++) {
+            Producto producto = productos.get(i);
+            int cantidad = cantidades.get(i);
+            total += producto.getPrecio() * cantidad;
+        }
+        return total;
+    }
 }

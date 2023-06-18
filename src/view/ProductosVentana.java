@@ -136,7 +136,7 @@ public class ProductosVentana extends JFrame {
                 DefaultTableModel tabla = new DefaultTableModel(
                         new String[]{"Nombre", "Cantidad"}, 0);
 
-                Map<Producto, Integer> productosEnCarrito = carritoDeCompra.getProductos();
+                Map<Producto, Integer> productosEnCarrito = (Map<Producto, Integer>) carritoDeCompra.getProductos();
                 for (Map.Entry<Producto, Integer> entry : productosEnCarrito.entrySet()) {
                     Producto producto = entry.getKey();
                     int cantidad = entry.getValue();
@@ -149,7 +149,7 @@ public class ProductosVentana extends JFrame {
                 JScrollPane scrollPaneCarrito = new JScrollPane(tablaCarrito);
                 panelCarrito.add(scrollPaneCarrito, BorderLayout.CENTER);
 
-                JLabel lblCantidadProductos = new JLabel("Cantidad de Productos: " + carritoDeCompra.getCantidadProductos());
+                JLabel lblCantidadProductos = new JLabel("Cantidad de Productos: " + carritoDeCompra.getCantidadTotal());
                 panelCarrito.add(lblCantidadProductos, BorderLayout.SOUTH);
 
                 ventanaCarrito.setVisible(true);
@@ -186,7 +186,7 @@ public class ProductosVentana extends JFrame {
                 DefaultTableModel tableModel = new DefaultTableModel(
                         new String[]{"Producto", "Cantidad"}, 0);
 
-                Map<Producto, Integer> productosEnCarrito = carritoDeCompra.getProductos();
+                Map<Producto, Integer> productosEnCarrito = (Map<Producto, Integer>) carritoDeCompra.getProductos();
                 for (Map.Entry<Producto, Integer> entry : productosEnCarrito.entrySet()) {
                     Producto producto = entry.getKey();
                     int cantidad = entry.getValue();

@@ -58,14 +58,37 @@ public class ClienteController {
 			statement.setString(5, direccion);
 			statement.executeUpdate();
 
-			ConexionBD.commit(); // Confirmar la transacción
+			ConexionBD.commit();
 			System.out.println("Cliente creado exitosamente.");
 		} catch (SQLException e) {
 			System.err.println("Error al crear el cliente: " + e.getMessage());
-			ConexionBD.rollback(); // Deshacer la transacción en caso de error
+			ConexionBD.rollback();
 		} finally {
-			ConexionBD.closeConnection(); // Cerrar la conexión
+			ConexionBD.closeConnection();
 		}
+	}
+
+	public static int obtenerIdCliente(String usuario) {
+		int idCliente = 0;
+
+		ConexionBD.openConnection();
+
+		try {
+			String sql = "SELECT id FROM Cliente WHERE usuario = ?";
+			PreparedStatement statement = ConexionBD.prepareStatement(sql);
+			statement.setString(1, usuario);
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				idCliente = resultSet.getInt("id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConexionBD.closeConnection();
+		}
+		System.out.println(idCliente);//Borrar
+		return idCliente;
 	}
 
 }
