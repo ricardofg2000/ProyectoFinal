@@ -91,6 +91,12 @@ public class Producto {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
+	
+	
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	@Override
     public String toString() {

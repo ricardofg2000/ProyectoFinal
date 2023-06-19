@@ -16,14 +16,14 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
-public class ProductosVentanaMenu extends JFrame {
+public class FrmCliente extends JFrame {
 
     private JPanel contentPane;
     private JTable tableProductos;
     private CarritoDeCompra carritoDeCompra;
     private int idCliente;
 
-    public ProductosVentanaMenu(int id_cliente) {
+    public FrmCliente(int id_cliente) {
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(750, 568);
@@ -137,7 +137,7 @@ public class ProductosVentanaMenu extends JFrame {
                     }
                 }
 
-                JOptionPane.showMessageDialog(ProductosVentanaMenu.this, "Productos agregados al carrito de compra.");
+                JOptionPane.showMessageDialog(FrmCliente.this, "Productos agregados al carrito de compra.");
             }
         });
     }
@@ -210,7 +210,7 @@ public class ProductosVentanaMenu extends JFrame {
         btnTramitarPedido.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int confirmacion = JOptionPane.showConfirmDialog(ProductosVentanaMenu.this,
+                int confirmacion = JOptionPane.showConfirmDialog(FrmCliente.this,
                         "¿Desea tramitar el pedido?",
                         "Confirmación de pedido", JOptionPane.YES_NO_OPTION);
                 if (confirmacion == JOptionPane.YES_OPTION) {
@@ -221,10 +221,10 @@ public class ProductosVentanaMenu extends JFrame {
                             int cantidad = carritoDeCompra.getCantidad(producto);
                             DetallePedidoController.agregarDetallePedido(idPedido, carritoDeCompra);
                         }
-                        JOptionPane.showMessageDialog(ProductosVentanaMenu.this, "Pedido tramitado con éxito.");
+                        JOptionPane.showMessageDialog(FrmCliente.this, "Pedido tramitado con éxito.");
                         ventanaPedido.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(ProductosVentanaMenu.this, "Error al agregar el pedido. Intente nuevamente.");
+                        JOptionPane.showMessageDialog(FrmCliente.this, "Error al agregar el pedido. Intente nuevamente.");
                     }
                 }
             }

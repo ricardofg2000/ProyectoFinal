@@ -3,7 +3,7 @@ package view;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import controller.ClienteController;
+import controller.ClientesController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -80,10 +80,10 @@ public class CrearClienteVentana extends JFrame {
                 String telefono = campoTextoTelefono.getText();
                 String direccion = campoTextoDireccion.getText();
 
-                if (ClienteController.existeUsuario(usuario)) {
+                if (ClientesController.existeUsuario(usuario)) {
                     JOptionPane.showMessageDialog(contentPane, "El usuario ya existe. Por favor, elija otro nombre de usuario.");
                 } else {
-                    ClienteController.crearCliente(nombre, usuario, contrasena, telefono, direccion);
+                    ClientesController.crearCliente(nombre, usuario, contrasena, telefono, direccion);
                     JOptionPane.showMessageDialog(contentPane, "Cliente creado exitosamente.");
                     dispose();
                 }

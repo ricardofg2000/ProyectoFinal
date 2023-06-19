@@ -3,7 +3,7 @@ package view;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import controller.ClienteController;
+import controller.ClientesController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -87,8 +87,8 @@ public class ClienteVentana extends JFrame {
                 String usuario = campoTextoUsuario.getText();
                 String contrasena = new String(campoTextoContrasena.getPassword());
 
-                if (ClienteController.validarCredenciales(usuario, contrasena)) {
-                    int idCliente = ClienteController.obtenerIdCliente(usuario);
+                if (ClientesController.validarCredenciales(usuario, contrasena)) {
+                    int idCliente = ClientesController.obtenerIdCliente(usuario);
                     mostrarVentanaProductos(idCliente);
                 } else {
                     JOptionPane.showMessageDialog(contentPane, "Credenciales inválidas. Intente nuevamente.");
@@ -107,7 +107,7 @@ public class ClienteVentana extends JFrame {
     private void mostrarVentanaProductos(int idCliente) {
         dispose();
 
-        ProductosVentanaMenu productosVentana = new ProductosVentanaMenu(idCliente);
+        FrmCliente productosVentana = new FrmCliente(idCliente);
         productosVentana.setVisible(true);
     }
 }

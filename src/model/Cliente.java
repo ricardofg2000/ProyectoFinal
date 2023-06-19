@@ -4,57 +4,79 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente {
-    private String usuario;
-    private String contraseña;
-    private String nombre;
-    private String direccion;
-    private String telefono;
+	private int id;
+	private String usuario;
+	private String contrasena;
+	private String nombre;
+	private String direccion;
+	private String telefono;
 
-    public Cliente(String usuario, String contraseña, String nombre, String direccion, String telefono) {
-        this.usuario = usuario;
-        this.contraseña = contraseña;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.telefono = telefono;
-    }
+	public Cliente() {
+	}
 
-    public String getUsuario() {
-        return usuario;
-    }
+	public Cliente(String usuario, String contraseña, String nombre, String direccion, String telefono) {
+		this.usuario = usuario;
+		this.contrasena = contraseña;
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.telefono = telefono;
+	}
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
+	public Cliente(int id, String usuario, String contraseña, String nombre, String direccion, String telefono) {
+		this.id = id;
+		this.usuario = usuario;
+		this.contrasena = contraseña;
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.telefono = telefono;
+	}
 
-    public String getContraseña() {
-        return contraseña;
-    }
+	public String getUsuario() {
+		return usuario;
+	}
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
 
-    public String getNombre() {
-        return nombre;
-    }
+	public String getContrasena() {
+		return contrasena;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public void setContrasena(String contraseña) {
+		this.contrasena = contraseña;
+	}
 
-    public String getDireccion() {
-        return direccion;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public String getTelefono() {
-        return telefono;
-    }
+	public String getDireccion() {
+		return direccion;
+	}
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }

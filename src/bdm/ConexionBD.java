@@ -11,9 +11,10 @@ public class ConexionBD {
 
 	private static Connection connection = null;
 	
-    private static final String DB_URL = "jdbc:mysql://database-ricardo.ckscbj98msy3.us-east-1.rds.amazonaws.com:3306/ProyectoProgramacion";
+    //private static final String DB_URL = "jdbc:mysql://database-ricardo.ckscbj98msy3.us-east-1.rds.amazonaws.com:3306/ProyectoProgramacion";
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/proyectoprogramacion";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "rootroot";
+    private static final String DB_PASSWORD = "root";
 
 	/**
 	 * Abrir una conexión con la BD
