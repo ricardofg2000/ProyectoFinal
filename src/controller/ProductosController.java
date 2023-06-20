@@ -97,4 +97,28 @@ public class ProductosController {
         }
     }
 
+    public static Producto obtenerProductoPorId(int id) {
+        Producto producto = null;
+        ConexionBD.openConnection();
+        String sql = "SELECT * FROM productos WHERE id = ?";
+        try (PreparedStatement stmt = ConexionBD.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int productId = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                double precio = rs.getDouble("precio");
+                String descripcion = rs.getString("descripcion");
+                String codigoBarras = rs.getString("codigo_barras");
+
+                producto = new Producto(productId, nombre, precio, descripcion, codigoBarras);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConexionBD.closeConnection();
+        }
+        return producto;
+    }
 }

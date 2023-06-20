@@ -107,7 +107,7 @@ public class ClienteVentana extends JFrame {
     private void mostrarVentanaProductos(int idCliente) {
         dispose();
 
-        FrmCliente productosVentana = new FrmCliente(idCliente);
+        FrmCliente productosVentana = new FrmCliente();
         productosVentana.setVisible(true);
     }
 }

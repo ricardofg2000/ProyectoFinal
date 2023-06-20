@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PedidosController {
-    public static int agregarPedido(int idCliente) {
-        int idPedido = -1; // Valor inicial por defecto para indicar que no se pudo agregar el pedido
+    public static int agregarPedido(int idCliente, int idCarrito) {
+        int idPedido = -1;
 
         java.util.Date fechaActual = new java.util.Date();
         java.sql.Timestamp fechaPedido = new java.sql.Timestamp(fechaActual.getTime());
@@ -16,11 +16,12 @@ public class PedidosController {
         ConexionBD.openConnection();
 
         try {
-            String sql = "INSERT INTO Pedidos (cliente_id, fechaPedido) VALUES (?, ?)";
+            String sql = "INSERT INTO Pedidos (idCarrito, idCliente, fechaPedido) VALUES (?, ?, ?)";
             PreparedStatement statement = ConexionBD.prepareStatement(sql);
 
-            statement.setInt(1, idCliente);
-            statement.setTimestamp(2, fechaPedido);
+            statement.setInt(1, idCarrito);
+            statement.setInt(2, idCliente);
+            statement.setTimestamp(3, fechaPedido);
 
             statement.executeUpdate();
 
@@ -38,7 +39,7 @@ public class PedidosController {
     }
 
     public static int obtenerUltimoIdPedido() {
-        int idPedido = -1; // Valor inicial por defecto para indicar que no se pudo obtener el ID del pedido
+        int idPedido = -1;
 
         ConexionBD.openConnection();
 
