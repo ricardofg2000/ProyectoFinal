@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ClienteVentana extends JFrame {
+public class FrmPrincipalCliente extends JFrame {
 
     private JPanel contentPane;
     private JTextField campoTextoUsuario;
@@ -20,7 +20,7 @@ public class ClienteVentana extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ClienteVentana frame = new ClienteVentana();
+                    FrmPrincipalCliente frame = new FrmPrincipalCliente();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -29,7 +29,7 @@ public class ClienteVentana extends JFrame {
         });
     }
 
-    public ClienteVentana() {
+    public FrmPrincipalCliente() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(443, 325);
