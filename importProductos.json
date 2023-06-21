@@ -1,0 +1,32 @@
+[
+  {
+    "nombre": "Camiseta de manga corta",
+    "precio": 19.99,
+    "descripcion": "Camiseta de algodón suave y cómoda, ideal para uso diario.",
+    "codigoBarras": "123456789"
+  },
+  {
+    "nombre": "Zapatillas deportivas",
+    "precio": 59.99,
+    "descripcion": "Zapatillas con suela amortiguada y diseño moderno, perfectas para hacer ejercicio.",
+    "codigoBarras": "987654321"
+  },
+  {
+    "nombre": "Pantalones vaqueros",
+    "precio": 34.99,
+    "descripcion": "Pantalones de mezclilla duraderos y de corte recto, ideales para un estilo casual.",
+    "codigoBarras": "456789123"
+  },
+  {
+    "nombre": "Bolso de mano",
+    "precio": 29.99,
+    "descripcion": "Bolso elegante y espacioso con múltiples compartimentos para organizar tus pertenencias.",
+    "codigoBarras": "789123456"
+  },
+  {
+    "nombre": "Reloj de pulsera",
+    "precio": 79.99,
+    "descripcion": "Reloj analógico de alta calidad con correa de acero inoxidable y resistente al agua.",
+    "codigoBarras": "321654987"
+  }
+]

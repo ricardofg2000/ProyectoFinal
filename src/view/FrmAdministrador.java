@@ -15,7 +15,7 @@ import java.awt.event.ActionEvent;
 public class FrmAdministrador extends JFrame {
 
     private JPanel contentPane;
-
+/*
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -28,7 +28,7 @@ public class FrmAdministrador extends JFrame {
             }
         });
     }
-
+*/
     public FrmAdministrador() {
     	setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,6 +64,10 @@ public class FrmAdministrador extends JFrame {
             }
         });
         mnGestion.add(mntmProductos);
+        
+        setVisible(true);
     }
+    
+    
 
 }

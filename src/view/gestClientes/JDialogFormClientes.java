@@ -26,7 +26,7 @@ public class JDialogFormClientes extends JDialog {
         setTitle("Formulario de Cliente");
         setModal(true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 467, 241);
+        setBounds(100, 100, 460, 249);
         getContentPane().setLayout(null);
 
         JPanel panel = new JPanel();
@@ -83,9 +83,8 @@ public class JDialogFormClientes extends JDialog {
         okButton.setBounds(206, 161, 89, 23);
         panel.add(okButton);
         okButton.addActionListener(e -> {
-            if (validarCampos()) { // Validar campos antes de actualizar el cliente
+            if (validarCampos()) { 
                 actualizarCliente();
-                camposCompletos = true;
                 dispose();
             }
         });
@@ -100,8 +99,6 @@ public class JDialogFormClientes extends JDialog {
         textFieldContrasena.setText(cliente.getContrasena());
         textFieldTelefono.setText(cliente.getTelefono());
         textFieldDireccion.setText(cliente.getDireccion());
-
-        camposCompletos = false; // Inicializar la variable en falso
     }
 
     private boolean validarCampos() {
@@ -110,7 +107,6 @@ public class JDialogFormClientes extends JDialog {
         String contrasena = textFieldContrasena.getText().trim();
 
         if (nombre.isEmpty() || usuario.isEmpty() || contrasena.isEmpty()) {
-            // Mostrar un mensaje de error indicando los campos obligatorios
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos obligatorios.",
                     "Campos obligatorios vacíos", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -129,15 +125,6 @@ public class JDialogFormClientes extends JDialog {
 
     public Cliente showDialog() {
         setVisible(true);
-
-        while (!camposCompletos) { // Mantener el JDialog abierto hasta que los campos estén completos
-            try {
-                Thread.sleep(100); // Pequeña pausa para evitar un bucle infinito
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
         return cliente;
     }
 }

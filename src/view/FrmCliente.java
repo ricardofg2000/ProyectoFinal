@@ -20,7 +20,7 @@ public class FrmCliente extends JFrame {
 
     private JPanel contentPane;
     private static FrmCliente frame;
-
+/*
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -33,7 +33,7 @@ public class FrmCliente extends JFrame {
             }
         });
     }
-
+*/
     public FrmCliente() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,6 +58,8 @@ public class FrmCliente extends JFrame {
             }
         });
         mnPaginaPrincipal.add(mntmListadoProductos);
+        
+        setVisible(true);
 
 
     }

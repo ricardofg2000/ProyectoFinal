@@ -11,24 +11,33 @@ import java.util.List;
 
 public class ClientesController {
 
-	public static boolean validarCredenciales(String usuario, String contrasena) {
-		boolean valid = false;
-		ConexionBD.openConnection();
-		String sql = "SELECT * FROM Cliente WHERE usuario = ? AND contrasena = ?";
+	public static int validarCredenciales(String usuario, String contrasena) {
+	    int valid = 0;
+	    ConexionBD.openConnection();
+	    String sql = "SELECT * FROM Cliente WHERE usuario = ? AND contrasena = ?";
 
-		try {
-			PreparedStatement statement = ConexionBD.prepareStatement(sql);
-			statement.setString(1, usuario);
-			statement.setString(2, contrasena);
-			ResultSet resultSet = statement.executeQuery();
-			valid = resultSet.next();
-		} catch (SQLException e) {
-			System.err.println("Error al validar las credenciales: " + e.getMessage());
-		}
+	    try {
+	        PreparedStatement statement = ConexionBD.prepareStatement(sql);
+	        statement.setString(1, usuario);
+	        statement.setString(2, contrasena);
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        if (resultSet.next()) {
+	            String rol = resultSet.getString("rol");
+	            if (rol.equals("admin")) {
+	                valid = 1;
+	            } else if (rol.equals("cliente")) {
+	                valid = 2;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error al validar las credenciales: " + e.getMessage());
+	    }
 
-		ConexionBD.closeConnection();
-		return valid;
+	    ConexionBD.closeConnection();
+	    return valid;
 	}
+
 
 	public static boolean existeUsuario(String usuario) {
 		ConexionBD.openConnection();
@@ -150,8 +159,9 @@ public class ClientesController {
 	            String telefono = resultSet.getString("telefono");
 	            String usuario = resultSet.getString("usuario");
 	            String contrasena = resultSet.getString("contrasena");
+	            String rol = resultSet.getString("rol");
 
-	            Cliente cliente = new Cliente(id, usuario, contrasena, nombre, telefono, direccion);
+	            Cliente cliente = new Cliente(id, usuario, contrasena, nombre, telefono, direccion, rol);
 	            clientes.add(cliente);
 	        }
 	    } catch (SQLException e) {

@@ -10,25 +10,28 @@ public class Cliente {
 	private String nombre;
 	private String direccion;
 	private String telefono;
+	private String rol;
 
 	public Cliente() {
 	}
 
-	public Cliente(String usuario, String contraseña, String nombre, String direccion, String telefono) {
+	public Cliente(String usuario, String contraseña, String nombre, String direccion, String telefono, String rol) {
 		this.usuario = usuario;
 		this.contrasena = contraseña;
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.telefono = telefono;
+		this.rol = rol;
 	}
 
-	public Cliente(int id, String usuario, String contraseña, String nombre, String direccion, String telefono) {
+	public Cliente(int id, String usuario, String contraseña, String nombre, String direccion, String telefono, String rol) {
 		this.id = id;
 		this.usuario = usuario;
 		this.contrasena = contraseña;
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.telefono = telefono;
+		this.rol = rol;
 	}
 
 	public String getUsuario() {
@@ -79,11 +82,21 @@ public class Cliente {
 		this.id = id;
 	}
 
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", usuario=" + usuario + ", contrasena=" + contrasena + ", nombre=" + nombre
-				+ ", direccion=" + direccion + ", telefono=" + telefono + "]";
+				+ ", direccion=" + direccion + ", telefono=" + telefono + ", rol=" + rol + "]";
 	}
+
+	
 
 	
 }
