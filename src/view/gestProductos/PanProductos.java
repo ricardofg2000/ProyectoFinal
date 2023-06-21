@@ -64,7 +64,7 @@ public class PanProductos extends JPanel {
 				JDialogFormProductos dialog = new JDialogFormProductos(nuevoProducto);
 				Producto productoNuevo = dialog.showDialog();
 
-				if (productoNuevo != nuevoProducto) {
+				if (productoNuevo != null) {
 					ProductosController.agregarProducto(productoNuevo);
 					actualizarPan();
 				}

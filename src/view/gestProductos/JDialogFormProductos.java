@@ -3,6 +3,7 @@ package view.gestProductos;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -18,7 +19,7 @@ public class JDialogFormProductos extends JDialog {
     private Producto producto;
 
     public JDialogFormProductos(Producto producto) {
-    	setResizable(false);
+        setResizable(false);
         this.producto = producto;
         setTitle("Formulario de Producto");
         setModal(true);
@@ -71,8 +72,10 @@ public class JDialogFormProductos extends JDialog {
         okButton.setBounds(206, 131, 89, 23);
         panel.add(okButton);
         okButton.addActionListener(e -> {
-            actualizarProducto();
-            dispose();
+            if (validarCampos()) {
+                actualizarProducto();
+                dispose();
+            }
         });
 
         JButton cancelButton = new JButton("Cancel");
@@ -84,6 +87,29 @@ public class JDialogFormProductos extends JDialog {
         textFieldPrecio.setText(String.valueOf(producto.getPrecio()));
         textFieldDescripcion.setText(producto.getDescripcion());
         textFieldCodigoBarras.setText(producto.getCodigoBarras());
+    }
+
+    private boolean validarCampos() {
+        String nombre = textFieldNombre.getText().trim();
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo 'Nombre' no puede estar vacío", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        double precio;
+        try {
+            precio = Double.parseDouble(textFieldPrecio.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El campo 'Precio' debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        if (precio == 0) {
+            JOptionPane.showMessageDialog(this, "El campo 'Precio' no puede ser 0", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        return true;
     }
 
     private void actualizarProducto() {

@@ -59,7 +59,8 @@ public class PanClientes extends JPanel {
 				Cliente nuevoCliente = new Cliente();
 				JDialogFormClientes dialog = new JDialogFormClientes(nuevoCliente);
 				Cliente clienteNuevo = dialog.showDialog();
-				if (clienteNuevo != nuevoCliente) {
+				if (clienteNuevo != null) {
+					System.out.println("estaOK");
 					ClientesController.crearCliente(clienteNuevo);
 					actualizarPan();
 				}

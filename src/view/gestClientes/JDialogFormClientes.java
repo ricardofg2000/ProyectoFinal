@@ -3,6 +3,7 @@ package view.gestClientes;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -17,6 +18,7 @@ public class JDialogFormClientes extends JDialog {
     private JTextField textFieldDireccion;
 
     private Cliente cliente;
+    private boolean camposCompletos; // Variable para verificar si los campos obligatorios están completos
 
     public JDialogFormClientes(Cliente cliente) {
         setResizable(false);
@@ -32,7 +34,7 @@ public class JDialogFormClientes extends JDialog {
         getContentPane().add(panel);
         panel.setLayout(null);
 
-        JLabel lblNombre = new JLabel("Nombre:");
+        JLabel lblNombre = new JLabel("Nombre*:");
         lblNombre.setBounds(10, 10, 100, 20);
         panel.add(lblNombre);
 
@@ -41,7 +43,7 @@ public class JDialogFormClientes extends JDialog {
         panel.add(textFieldNombre);
         textFieldNombre.setColumns(10);
 
-        JLabel lblUsuario = new JLabel("Usuario:");
+        JLabel lblUsuario = new JLabel("Usuario*:");
         lblUsuario.setBounds(10, 40, 100, 20);
         panel.add(lblUsuario);
 
@@ -50,7 +52,7 @@ public class JDialogFormClientes extends JDialog {
         panel.add(textFieldUsuario);
         textFieldUsuario.setColumns(10);
 
-        JLabel lblContrasena = new JLabel("Contraseña:");
+        JLabel lblContrasena = new JLabel("Contraseña*:");
         lblContrasena.setBounds(10, 70, 100, 20);
         panel.add(lblContrasena);
 
@@ -81,8 +83,11 @@ public class JDialogFormClientes extends JDialog {
         okButton.setBounds(206, 161, 89, 23);
         panel.add(okButton);
         okButton.addActionListener(e -> {
-            actualizarCliente();
-            dispose();
+            if (validarCampos()) { // Validar campos antes de actualizar el cliente
+                actualizarCliente();
+                camposCompletos = true;
+                dispose();
+            }
         });
 
         JButton cancelButton = new JButton("Cancel");
@@ -95,6 +100,23 @@ public class JDialogFormClientes extends JDialog {
         textFieldContrasena.setText(cliente.getContrasena());
         textFieldTelefono.setText(cliente.getTelefono());
         textFieldDireccion.setText(cliente.getDireccion());
+
+        camposCompletos = false; // Inicializar la variable en falso
+    }
+
+    private boolean validarCampos() {
+        String nombre = textFieldNombre.getText().trim();
+        String usuario = textFieldUsuario.getText().trim();
+        String contrasena = textFieldContrasena.getText().trim();
+
+        if (nombre.isEmpty() || usuario.isEmpty() || contrasena.isEmpty()) {
+            // Mostrar un mensaje de error indicando los campos obligatorios
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos obligatorios.",
+                    "Campos obligatorios vacíos", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        return true;
     }
 
     private void actualizarCliente() {
@@ -107,6 +129,15 @@ public class JDialogFormClientes extends JDialog {
 
     public Cliente showDialog() {
         setVisible(true);
+
+        while (!camposCompletos) { // Mantener el JDialog abierto hasta que los campos estén completos
+            try {
+                Thread.sleep(100); // Pequeña pausa para evitar un bucle infinito
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         return cliente;
     }
 }
