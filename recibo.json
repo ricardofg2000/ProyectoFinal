@@ -1,22 +1,12 @@
 [
   {
     "producto": {
-      "id": 6,
-      "nombre": "Apple MacBook Pro",
-      "precio": 1799.99,
-      "descripcion": "Potente laptop para profesionales",
-      "codigoBarras": "6789012345"
+      "id": 8,
+      "nombre": "Bose QuietComfort 35 II",
+      "precio": 349.99,
+      "descripcion": "Auriculares con cancelación de ruido",
+      "codigoBarras": "8901234567"
     },
-    "cantidad": 4
-  },
-  {
-    "producto": {
-      "id": 9,
-      "nombre": "Fitbit Versa 3",
-      "precio": 229.99,
-      "descripcion": "Smartwatch con seguimiento de actividad",
-      "codigoBarras": "9012345678"
-    },
-    "cantidad": 1
+    "cantidad": 2
   }
 ]

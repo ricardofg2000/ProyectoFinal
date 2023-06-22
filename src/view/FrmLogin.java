@@ -16,17 +16,14 @@ public class FrmLogin extends JFrame {
 	private JPasswordField campoTextoContrasena;
 	private JButton btnIniciarSesion;
 
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { FrmLogin frame = new FrmLogin();
-	 * frame.setVisible(true); } catch (Exception e) { e.printStackTrace(); } } });
-	 * }
-	 */
 	public FrmLogin() {
+		setTitle("Inicio de sesión");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(443, 325);
 		setLocationRelativeTo(null);
+		setIconImage(new ImageIcon("images/icono.png").getImage());
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 		setContentPane(contentPane);
@@ -77,20 +74,7 @@ public class FrmLogin extends JFrame {
 
 		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String usuario = campoTextoUsuario.getText();
-				String contrasena = new String(campoTextoContrasena.getPassword());
-				System.out.println(ClientesController.validarCredenciales(usuario, contrasena));
-				switch (ClientesController.validarCredenciales(usuario, contrasena)) {
-				case 0:
-					JOptionPane.showMessageDialog(contentPane, "Credenciales inválidas. Intente nuevamente.");
-					break;
-				case 1:
-					mostrarVentanaAdmin();
-					break;
-				case 2:
-					mostrarVentanaCliente();
-					break;
-				}
+				iniciarSesion();
 			}
 		});
 
@@ -103,10 +87,27 @@ public class FrmLogin extends JFrame {
 		setVisible(true);
 	}
 
-	private void mostrarVentanaCliente() {
+	private void iniciarSesion() {
+		String usuario = campoTextoUsuario.getText();
+		String contrasena = new String(campoTextoContrasena.getPassword());
+		System.out.println(ClientesController.validarCredenciales(usuario, contrasena));
+		switch (ClientesController.validarCredenciales(usuario, contrasena)) {
+		case 0:
+			JOptionPane.showMessageDialog(contentPane, "Credenciales inválidas. Intente nuevamente.");
+			break;
+		case 1:
+			mostrarVentanaAdmin();
+			break;
+		case 2:
+			mostrarVentanaCliente(usuario);
+			break;
+		}
+	}
+
+	private void mostrarVentanaCliente(String usuario) {
 		dispose();
 
-		FrmCliente nuevaVentana = new FrmCliente();
+		FrmCliente nuevaVentana = new FrmCliente(usuario);
 		nuevaVentana.setVisible(true);
 	}
 

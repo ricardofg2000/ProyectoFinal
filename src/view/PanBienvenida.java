@@ -11,21 +11,21 @@ import java.awt.Color;
 
 public class PanBienvenida extends JPanel {
 
-    public PanBienvenida() {
-        setLayout(new BorderLayout());
+	public PanBienvenida() {
+		setLayout(new BorderLayout());
 
-        ImageIcon imageIcon = new ImageIcon("images/welcome.jpg");
-        Image image = imageIcon.getImage().getScaledInstance(500, 300, Image.SCALE_SMOOTH);
-        ImageIcon scaledImageIcon = new ImageIcon(image);
-        JLabel lblImage = new JLabel(scaledImageIcon);
-        lblImage.setBackground(new Color(255, 255, 255));
-        lblImage.setHorizontalAlignment(JLabel.CENTER);
+		ImageIcon imageIcon = new ImageIcon("images/welcome.jpg");
+		Image image = imageIcon.getImage().getScaledInstance(500, 300, Image.SCALE_SMOOTH);
+		ImageIcon scaledImageIcon = new ImageIcon(image);
+		JLabel lblImage = new JLabel(scaledImageIcon);
+		lblImage.setBackground(new Color(255, 255, 255));
+		lblImage.setHorizontalAlignment(JLabel.CENTER);
 
-        JPanel centerPanel = new JPanel();
-        centerPanel.setBackground(new Color(255, 255, 255));
-        centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        centerPanel.add(lblImage);
+		JPanel centerPanel = new JPanel();
+		centerPanel.setBackground(new Color(255, 255, 255));
+		centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		centerPanel.add(lblImage);
 
-        add(centerPanel, BorderLayout.CENTER);
-    }
+		add(centerPanel, BorderLayout.CENTER);
+	}
 }

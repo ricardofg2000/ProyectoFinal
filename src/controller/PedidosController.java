@@ -7,36 +7,53 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PedidosController {
-    public static int agregarPedido(int idCliente, int idCarrito) {
-        int idPedido = -1;
+	public static int agregarPedido(int idCliente) {
+	    int idPedido = -1;
 
-        java.util.Date fechaActual = new java.util.Date();
-        java.sql.Timestamp fechaPedido = new java.sql.Timestamp(fechaActual.getTime());
+	    java.util.Date fechaActual = new java.util.Date();
+	    java.sql.Timestamp fechaPedido = new java.sql.Timestamp(fechaActual.getTime());
 
-        ConexionBD.openConnection();
+	    ConexionBD.openConnection();
 
-        try {
-            String sql = "INSERT INTO Pedidos (idCarrito, idCliente, fechaPedido) VALUES (?, ?, ?)";
-            PreparedStatement statement = ConexionBD.prepareStatement(sql);
+	    try {
+	        // Consulta para obtener el idCarrito usando el idCliente
+	        String carritoSql = "SELECT id FROM carritodecompra WHERE id_cliente = ?";
+	        PreparedStatement carritoStatement = ConexionBD.prepareStatement(carritoSql);
+	        carritoStatement.setInt(1, idCliente);
+	        ResultSet carritoResult = carritoStatement.executeQuery();
 
-            statement.setInt(1, idCarrito);
-            statement.setInt(2, idCliente);
-            statement.setTimestamp(3, fechaPedido);
+	        int idCarrito = -1;
 
-            statement.executeUpdate();
+	        if (carritoResult.next()) {
+	            idCarrito = carritoResult.getInt("id");
+	        } else {
+	            System.out.println("No se encontró un carrito asociado al cliente.");
+	            return idPedido;
+	        }
 
-            ConexionBD.commit();
-            idPedido = obtenerUltimoIdPedido();
-            System.out.println("Pedido agregado correctamente. ID del pedido: " + idPedido);
-        } catch (SQLException e) {
-            System.out.println("Error al agregar el pedido: " + e.getMessage());
-            ConexionBD.rollback();
-        } finally {
-            ConexionBD.closeConnection();
-        }
+	        // Inserción del pedido con el idCarrito obtenido
+	        String pedidoSql = "INSERT INTO Pedidos (idCarrito, idCliente, fechaPedido) VALUES (?, ?, ?)";
+	        PreparedStatement pedidoStatement = ConexionBD.prepareStatement(pedidoSql);
 
-        return idPedido;
-    }
+	        pedidoStatement.setInt(1, idCarrito);
+	        pedidoStatement.setInt(2, idCliente);
+	        pedidoStatement.setTimestamp(3, fechaPedido);
+
+	        pedidoStatement.executeUpdate();
+
+	        ConexionBD.commit();
+	        idPedido = obtenerUltimoIdPedido();
+	        System.out.println("Pedido agregado correctamente. ID del pedido: " + idPedido);
+	    } catch (SQLException e) {
+	        System.out.println("Error al agregar el pedido: " + e.getMessage());
+	        ConexionBD.rollback();
+	    } finally {
+	        ConexionBD.closeConnection();
+	    }
+
+	    return idPedido;
+	}
+
 
     public static int obtenerUltimoIdPedido() {
         int idPedido = -1;

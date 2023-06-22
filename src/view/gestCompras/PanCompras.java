@@ -24,7 +24,7 @@ public class PanCompras extends JPanel {
     private JTable tableProductos;
     private CarritoDeCompra carrito;
 
-    public PanCompras() {
+    public PanCompras(String usuario) {
         setLayout(new BorderLayout());
 
         tableProductos = new JTable();
@@ -34,7 +34,35 @@ public class PanCompras extends JPanel {
         List<Producto> productos = ProductosController.listadoProductos();
         int idCarrito = CarritoDeCompraController.generarIdCarrito();
         
-        String[] columnas = { "ID", "Nombre", "Precio", "Descripción", "Código de Barras" };
+        crearTablaProductos(productos);
+
+        carrito = new CarritoDeCompra();
+
+        JButton btnAgregarCarrito = new JButton("Añadir al Carrito");
+        JButton btnVerCarrito = new JButton("Ver Carrito");
+
+        JPanel panelBotones = new JPanel();
+        panelBotones.add(btnAgregarCarrito);
+        panelBotones.add(btnVerCarrito);
+        add(panelBotones, BorderLayout.SOUTH);
+
+        btnAgregarCarrito.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                agregarCarrito(usuario);
+            }
+        });
+
+
+        btnVerCarrito.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JDialogCarrito dialogCarrito = new JDialogCarrito(usuario);
+                dialogCarrito.setVisible(true);
+            }
+        });
+    }
+
+	private void crearTablaProductos(List<Producto> productos) {
+		String[] columnas = { "ID", "Nombre", "Precio", "Descripción", "Código de Barras" };
         DefaultTableModel tabla = new DefaultTableModel(columnas, 0);
 
         for (Producto producto : productos) {
@@ -47,53 +75,33 @@ public class PanCompras extends JPanel {
         tableProductos.getColumnModel().getColumn(0).setMaxWidth(0);
         tableProductos.getColumnModel().getColumn(0).setMinWidth(0);
         tableProductos.getColumnModel().getColumn(0).setPreferredWidth(0);
+	}
 
-        carrito = new CarritoDeCompra();
+	private void agregarCarrito(String usuario) {
+		int filaSeleccionada = tableProductos.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            int id = (int) tableProductos.getValueAt(filaSeleccionada, 0);
+            String nombre = (String) tableProductos.getValueAt(filaSeleccionada, 1);
+            double precio = (double) tableProductos.getValueAt(filaSeleccionada, 2);
+            String descripcion = (String) tableProductos.getValueAt(filaSeleccionada, 3);
+            String codigoBarras = (String) tableProductos.getValueAt(filaSeleccionada, 4);
 
-        JButton btnAgregarCarrito = new JButton("Añadir al Carrito");
-        JButton btnVerCarrito = new JButton("Ver Carrito"); // Botón adicional para ver el carrito
+            Producto producto = new Producto(id, nombre, precio, descripcion, codigoBarras);
 
-        JPanel panelBotones = new JPanel();
-        panelBotones.add(btnAgregarCarrito);
-        panelBotones.add(btnVerCarrito); // Agregar el botón al panel
-        add(panelBotones, BorderLayout.SOUTH);
+            String cantidadString = JOptionPane.showInputDialog("Ingrese la cantidad:", CarritoDeCompraController.obtenerCantidadProducto(usuario, producto.getId()));
+            if (cantidadString != null) {
+                try {
+                    int cantidad = Integer.parseInt(cantidadString);
 
-        btnAgregarCarrito.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int filaSeleccionada = tableProductos.getSelectedRow();
-                if (filaSeleccionada >= 0) {
-                    int id = (int) tableProductos.getValueAt(filaSeleccionada, 0);
-                    String nombre = (String) tableProductos.getValueAt(filaSeleccionada, 1);
-                    double precio = (double) tableProductos.getValueAt(filaSeleccionada, 2);
-                    String descripcion = (String) tableProductos.getValueAt(filaSeleccionada, 3);
-                    String codigoBarras = (String) tableProductos.getValueAt(filaSeleccionada, 4);
+                    CarritoDeCompraController.agregarProductoAlCarrito(usuario, producto.getId(), cantidad);
 
-                    Producto producto = new Producto(id, nombre, precio, descripcion, codigoBarras);
-
-                    String cantidadString = JOptionPane.showInputDialog("Ingrese la cantidad:", CarritoDeCompraController.obtenerCantidadProducto(idCarrito, producto.getId()));
-                    if (cantidadString != null) {
-                        try {
-                            int cantidad = Integer.parseInt(cantidadString);
-                            System.out.println(idCarrito);
-                            CarritoDeCompraController.agregarProductoAlCarrito(idCarrito, producto.getId(), cantidad);
-
-                            JOptionPane.showMessageDialog(null, "Producto agregado al carrito correctamente.");
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "La cantidad ingresada no es válida.", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Seleccione un producto de la lista.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Producto agregado al carrito correctamente.");
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "La cantidad ingresada no es válida.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        });
-
-
-        btnVerCarrito.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JDialogCarrito dialogCarrito = new JDialogCarrito(idCarrito);
-                dialogCarrito.setVisible(true);
-            }
-        });
-    }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un producto de la lista.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+	}
 }

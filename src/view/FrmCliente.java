@@ -18,54 +18,38 @@ import java.awt.event.ActionEvent;
 
 public class FrmCliente extends JFrame {
 
-    private JPanel contentPane;
-    private static FrmCliente frame;
-/*
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    frame = new FrmCliente();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-*/
-    public FrmCliente() {
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 591, 436);
+	private JPanel contentPane;
+	private static FrmCliente frame;
 
-        contentPane = new PanBienvenida();
-        setContentPane(contentPane);
+	public FrmCliente(String usuario) {
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 591, 436);
 
-        JMenuBar menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
-        
-        JMenu mnPaginaPrincipal = new JMenu("Pagina Principal");
-        menuBar.add(mnPaginaPrincipal);
+		contentPane = new PanBienvenida();
+		setContentPane(contentPane);
 
-        JMenuItem mntmListadoProductos = new JMenuItem("Listado de Productos");
-        mntmListadoProductos.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                contentPane.removeAll();
-                contentPane.add(new view.gestCompras.PanCompras(), BorderLayout.CENTER);
-                revalidate();
-                repaint();
-            }
-        });
-        mnPaginaPrincipal.add(mntmListadoProductos);
-        
-        setVisible(true);
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
 
+		JMenu mnPaginaPrincipal = new JMenu("Pagina Principal");
+		menuBar.add(mnPaginaPrincipal);
 
-    }
-    
-    
+		JMenuItem mntmListadoProductos = new JMenuItem("Listado de Productos");
+		mntmListadoProductos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarPanelProductos(usuario);
+			}
+		});
+		mnPaginaPrincipal.add(mntmListadoProductos);
 
+		setVisible(true);
+	}
 
+	private void mostrarPanelProductos(String usuario) {
+		contentPane.removeAll();
+		contentPane.add(new view.gestCompras.PanCompras(usuario), BorderLayout.CENTER);
+		revalidate();
+		repaint();
+	}
 }
-
