@@ -25,7 +25,12 @@ public class PanClientes extends JPanel {
 
         tableModel = new DefaultTableModel();
         tableModel.setColumnIdentifiers(new String[] { "ID", "Nombre", "Usuario", "Contraseña", "Teléfono", "Dirección", "Rol" });
-        tableClientes = new JTable(tableModel);
+        tableClientes = new JTable(tableModel){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         JScrollPane scrollPane = new JScrollPane(tableClientes);
         add(scrollPane, BorderLayout.CENTER);

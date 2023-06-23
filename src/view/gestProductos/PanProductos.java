@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ProductosController;
@@ -24,7 +25,12 @@ public class PanProductos extends JPanel {
 	public PanProductos() {
 		setLayout(new BorderLayout());
 
-		tableProductos = new JTable();
+		tableProductos = new JTable() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		JScrollPane scrollPane = new JScrollPane(tableProductos);
 		add(scrollPane, BorderLayout.CENTER);
 
@@ -34,8 +40,8 @@ public class PanProductos extends JPanel {
 		DefaultTableModel tabla = new DefaultTableModel(columnas, 0);
 
 		for (Producto producto : productos) {
-			Object[] fila = { producto.getId(),
-					producto.getNombre(), producto.getPrecio(), producto.getDescripcion(), producto.getCodigoBarras() };
+			Object[] fila = { producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getDescripcion(),
+					producto.getCodigoBarras() };
 			tabla.addRow(fila);
 		}
 
@@ -43,6 +49,11 @@ public class PanProductos extends JPanel {
 		tableProductos.getColumnModel().getColumn(0).setMaxWidth(0);
 		tableProductos.getColumnModel().getColumn(0).setMinWidth(0);
 		tableProductos.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+		tableProductos.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+		tableProductos.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
 
 		JButton btnAgregar = new JButton("Agregar Producto");
 		JButton btnEliminar = new JButton("Eliminar Producto");
@@ -54,12 +65,9 @@ public class PanProductos extends JPanel {
 		panelBotones.add(btnActualizar);
 		add(panelBotones, BorderLayout.SOUTH);
 
-
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				Producto nuevoProducto = new Producto();
-
 
 				JDialogFormProductos dialog = new JDialogFormProductos(nuevoProducto);
 				Producto productoNuevo = dialog.showDialog();
@@ -127,8 +135,6 @@ public class PanProductos extends JPanel {
 				}
 			}
 		});
-		
-		
 
 	}
 
@@ -143,6 +149,6 @@ public class PanProductos extends JPanel {
 					producto.getDescripcion(), producto.getCodigoBarras() };
 			modelo.addRow(fila);
 		}
-		
+
 	}
 }

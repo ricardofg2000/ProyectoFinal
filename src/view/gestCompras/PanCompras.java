@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controller.CarritoDeCompraController;
@@ -78,6 +79,11 @@ public class PanCompras extends JPanel {
         tableProductos.getColumnModel().getColumn(0).setMaxWidth(0);
         tableProductos.getColumnModel().getColumn(0).setMinWidth(0);
         tableProductos.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+        tableProductos.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        tableProductos.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
     }
 
     private void agregarCarrito(String usuario) {

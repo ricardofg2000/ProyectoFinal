@@ -1,5 +1,6 @@
 package bdm;
 
+import start.Log;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,42 +15,34 @@ public class ConexionBD {
 
 	private static Connection connection = null;
 	
-    //private static final String DB_URL = "jdbc:mysql://database-ricardo.ckscbj98msy3.us-east-1.rds.amazonaws.com:3306/ProyectoProgramacion";
-    private static final String DB_URL;
-    private static final String DB_USER;
-    private static final String DB_PASSWORD;
+    private static String db_URL = null;
+    private static String db_USER = null;
+    private static String db_PASSWORD = null;
 
     static {
-        String dbUrl = null;
-        String dbUser = null;
-        String dbPassword = null;
-
+        
         try (BufferedReader reader = new BufferedReader(new FileReader("src/bdm/dbconfig.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("DB_URL=")) {
-                    dbUrl = line.substring("DB_URL=".length());
+                    db_URL = line.substring("DB_URL=".length());
                 } else if (line.startsWith("DB_USER=")) {
-                    dbUser = line.substring("DB_USER=".length());
+                	db_USER = line.substring("DB_USER=".length());
                 } else if (line.startsWith("DB_PASSWORD=")) {
-                    dbPassword = line.substring("DB_PASSWORD=".length());
+                	db_PASSWORD = line.substring("DB_PASSWORD=".length());
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+        	Log log = new Log(Log.Tipo.ERROR, "Error al leer el fichero de configuración de la base de datos: " + e.getMessage());
         }
-
-        DB_URL = dbUrl;
-        DB_USER = dbUser;
-        DB_PASSWORD = dbPassword;
     }
 
 	public static void openConnection() {
 		try {
-			connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+			connection = DriverManager.getConnection(db_URL, db_USER, db_PASSWORD);
 			connection.setAutoCommit(false);
 		} catch (SQLException e) {
-			System.err.println("ERROR: OPENING. " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR, "ERROR: OPENING. " + e.getMessage());
 		}
 	}
 
@@ -59,7 +52,7 @@ public class ConexionBD {
 			if (connection != null)
 				connection.close();
 		} catch (SQLException e) {
-			System.err.println("ERROR: CLOSING. " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR, "ERROR: CLOSING. " + e.getMessage());
 		}
 	}
 
@@ -71,7 +64,7 @@ public class ConexionBD {
 			statement.setQueryTimeout(30);
 			rs = statement.executeQuery(sql);
 		} catch (SQLException e) {
-			System.err.println("ERROR: QUERING. " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR, "ERROR: QUERING. " + e.getMessage());
 		}
 		return rs;
 	}
@@ -86,7 +79,7 @@ public class ConexionBD {
 		try {
 			connection.commit();
 		} catch (SQLException e) {
-			System.err.println("ERROR: COMMIT. " + e.getMessage());
+			Log log = new Log("ERROR: COMMIT. " + e.getMessage());
 		}
 	}
 
@@ -95,7 +88,7 @@ public class ConexionBD {
 		try {
 			connection.rollback();
 		} catch (SQLException e) {
-			System.err.println("ERROR: ROLLBACK. " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR, "ERROR: ROLLBACK. " + e.getMessage());
 		}		
 	}
 

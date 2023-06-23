@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import model.Cliente;
+import start.Log;
 
 public class JDialogFormClientes extends JDialog {
 
@@ -28,6 +29,7 @@ public class JDialogFormClientes extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 460, 249);
         getContentPane().setLayout(null);
+        setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
         panel.setBounds(10, 11, 440, 188);
@@ -85,6 +87,7 @@ public class JDialogFormClientes extends JDialog {
         okButton.addActionListener(e -> {
             if (validarCampos()) { 
                 actualizarCliente();
+                Log log = new Log("Cliente actualizado exitosamente.");
                 dispose();
             }
         });
@@ -94,6 +97,8 @@ public class JDialogFormClientes extends JDialog {
         panel.add(cancelButton);
         cancelButton.addActionListener(e -> dispose());
 
+        
+        
         textFieldNombre.setText(cliente.getNombre());
         textFieldUsuario.setText(cliente.getUsuario());
         textFieldContrasena.setText(cliente.getContrasena());

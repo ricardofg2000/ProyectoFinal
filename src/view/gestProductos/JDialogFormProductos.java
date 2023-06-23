@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import model.Producto;
+import start.Log;
 
 public class JDialogFormProductos extends JDialog {
 
@@ -26,6 +27,7 @@ public class JDialogFormProductos extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 467, 241);
         getContentPane().setLayout(null);
+        setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
         panel.setBounds(10, 11, 440, 188);
@@ -74,6 +76,7 @@ public class JDialogFormProductos extends JDialog {
         okButton.addActionListener(e -> {
             if (validarCampos()) {
                 actualizarProducto();
+                Log log = new Log("Producto actualizado exitosamente.");
                 dispose();
             }
         });
@@ -83,6 +86,8 @@ public class JDialogFormProductos extends JDialog {
         panel.add(cancelButton);
         cancelButton.addActionListener(e -> dispose());
 
+        
+        
         textFieldNombre.setText(producto.getNombre());
         textFieldPrecio.setText(String.valueOf(producto.getPrecio()));
         textFieldDescripcion.setText(producto.getDescripcion());
