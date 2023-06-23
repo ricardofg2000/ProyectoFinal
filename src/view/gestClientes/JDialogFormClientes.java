@@ -19,7 +19,7 @@ public class JDialogFormClientes extends JDialog {
     private JTextField textFieldDireccion;
 
     private Cliente cliente;
-    private boolean camposCompletos; // Variable para verificar si los campos obligatorios están completos
+    private boolean camposCompletos;
 
     public JDialogFormClientes(Cliente cliente) {
         setResizable(false);

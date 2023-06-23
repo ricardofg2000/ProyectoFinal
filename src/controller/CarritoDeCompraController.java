@@ -42,7 +42,7 @@ public class CarritoDeCompraController {
 
 				Log log = new Log("Cantidad actualizada en el carrito correctamente.");
 
-				// Si ese cliente no tiene carrito de compra
+				// Si ese cliente no tiene carrito
 			} else {
 				// Consulta para obtener el id_cliente
 				String selectClienteSql = "SELECT id FROM Cliente WHERE usuario = ?";
@@ -118,7 +118,8 @@ public class CarritoDeCompraController {
 				cantidad = resultSet.getString("cantidad");
 			}
 		} catch (SQLException e) {
-			Log log = new Log(Log.Tipo.ERROR, "Error al obtener la cantidad del producto en el carrito: " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR,
+					"Error al obtener la cantidad del producto en el carrito: " + e.getMessage());
 		} finally {
 			ConexionBD.closeConnection();
 		}

@@ -9,7 +9,7 @@ public class Start {
 
 	public static void main(String[] args) {
 		//Log log = new Log(Log.Tipo.ERROR, "Este es un mensaje de error de prueba");
-
+/*
 		JsonController gest = new JsonController();
 		final String FILE_NAME = "importProductos.json";
 
@@ -25,7 +25,7 @@ public class Start {
 		} else {
 			System.out.println("No se encontraron productos en el archivo.");
 		}
-
+*/
 		new view.FrmLogin();
 	}
 
