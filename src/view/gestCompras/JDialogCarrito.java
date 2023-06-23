@@ -145,7 +145,9 @@ public class JDialogCarrito extends JDialog {
 				JOptionPane.showMessageDialog(null, "Recibo guardado correctamente", "Éxito",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
-
+			CarritoDeCompraController.borrarCarrito(usuario);
+		} else {
+			CarritoDeCompraController.borrarCarrito(usuario);
 		}
 	}
 }

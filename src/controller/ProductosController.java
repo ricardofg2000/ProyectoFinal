@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import model.Producto;
+import start.Log;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class ProductosController {
                 productos.add(producto);
             }
         } catch (SQLException e) {
-            System.err.println("Error al obtener los datos: " + e.getMessage());
+        	Log log = new Log(Log.Tipo.ERROR, "Error al obtener los datos: " + e.getMessage());
         }
 
         ConexionBD.closeConnection();
@@ -52,7 +54,7 @@ public class ProductosController {
             ConexionBD.commit();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	Log log = new Log(Log.Tipo.ERROR, "Error al agregar el producto a la base de datos: " + e.getMessage());
             ConexionBD.rollback();
         } finally {
             ConexionBD.closeConnection();
@@ -69,7 +71,7 @@ public class ProductosController {
             ConexionBD.commit();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	Log log = new Log(Log.Tipo.ERROR, "Error al borrar el producto de la base de datos: " + e.getMessage());
             ConexionBD.rollback();
         } finally {
             ConexionBD.closeConnection();
@@ -90,7 +92,7 @@ public class ProductosController {
             ConexionBD.commit();
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	Log log = new Log(Log.Tipo.ERROR, "Error al actualizar el producto en base de datos: " + e.getMessage());
             ConexionBD.rollback();
         } finally {
             ConexionBD.closeConnection();
@@ -115,7 +117,7 @@ public class ProductosController {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+        	Log log = new Log(Log.Tipo.ERROR, "Error al obtener el producto con id " + id + " en base de datos: " + e.getMessage());
         } finally {
             ConexionBD.closeConnection();
         }

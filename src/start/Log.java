@@ -43,6 +43,7 @@ public class Log {
 			writer.write(logEntry);
 			writer.newLine();
 		} catch (IOException e) {
+			Log log = new Log(Log.Tipo.ERROR, "Error al guardar en el archivo de log: " + e.getMessage());
 			System.err.println("Error al guardar en el archivo de log: " + e.getMessage());
 		}
 	}

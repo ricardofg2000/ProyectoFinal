@@ -1,6 +1,7 @@
 package controller;
 
 import bdm.ConexionBD;
+import start.Log;
 import model.CarritoDeCompra;
 import model.Producto;
 
@@ -12,65 +13,68 @@ import java.util.ArrayList;
 
 public class CarritoDeCompraController {
 	public static void agregarProductoAlCarrito(String usuario, int idProducto, int cantidad) {
-	    ConexionBD.openConnection();
+		ConexionBD.openConnection();
 
-	    try {
-	        String selectSql = "SELECT * FROM carritodecompra " +
-	                "INNER JOIN cliente ON carritodecompra.id_cliente = cliente.id " +
-	                "WHERE cliente.usuario = ? AND carritodecompra.producto_id = ?";
-	        PreparedStatement selectStatement = ConexionBD.prepareStatement(selectSql);
-	        selectStatement.setString(1, usuario);
-	        selectStatement.setInt(2, idProducto);
+		try {
+			String selectSql = "SELECT * FROM carritodecompra "
+					+ "INNER JOIN cliente ON carritodecompra.id_cliente = cliente.id "
+					+ "WHERE cliente.usuario = ? AND carritodecompra.producto_id = ?";
+			PreparedStatement selectStatement = ConexionBD.prepareStatement(selectSql);
+			selectStatement.setString(1, usuario);
+			selectStatement.setInt(2, idProducto);
 
-	        ResultSet resultSet = selectStatement.executeQuery();
+			ResultSet resultSet = selectStatement.executeQuery();
 
-	        if (resultSet.next()) {
-	            int nuevaCantidad = cantidad;
+			// Si existe un carrito de compra de ese cliente
+			if (resultSet.next()) {
+				int nuevaCantidad = cantidad;
 
-	            String updateSql = "UPDATE carritodecompra " +
-	                    "INNER JOIN Cliente ON carritodecompra.id_cliente = Cliente.id " +
-	                    "SET carritodecompra.cantidad = ? " +
-	                    "WHERE cliente.usuario = ? AND carritodecompra.producto_id = ?";
-	            PreparedStatement updateStatement = ConexionBD.prepareStatement(updateSql);
-	            updateStatement.setInt(1, nuevaCantidad);
-	            updateStatement.setString(2, usuario);
-	            updateStatement.setInt(3, idProducto);
+				String updateSql = "UPDATE carritodecompra "
+						+ "INNER JOIN Cliente ON carritodecompra.id_cliente = Cliente.id "
+						+ "SET carritodecompra.cantidad = ? "
+						+ "WHERE cliente.usuario = ? AND carritodecompra.producto_id = ?";
+				PreparedStatement updateStatement = ConexionBD.prepareStatement(updateSql);
+				updateStatement.setInt(1, nuevaCantidad);
+				updateStatement.setString(2, usuario);
+				updateStatement.setInt(3, idProducto);
 
-	            updateStatement.executeUpdate();
+				updateStatement.executeUpdate();
 
-	            System.out.println("Cantidad actualizada en el carrito correctamente.");
-	        } else {
-	            // Consulta para obtener el id_cliente
-	            String selectClienteSql = "SELECT id FROM Cliente WHERE usuario = ?";
-	            PreparedStatement selectClienteStatement = ConexionBD.prepareStatement(selectClienteSql);
-	            selectClienteStatement.setString(1, usuario);
-	            ResultSet clienteResultSet = selectClienteStatement.executeQuery();
+				Log log = new Log("Cantidad actualizada en el carrito correctamente.");
 
-	            int idCliente = 0;
-	            if (clienteResultSet.next()) {
-	                idCliente = clienteResultSet.getInt("id");
-	            }
+				// Si ese cliente no tiene carrito de compra
+			} else {
+				// Consulta para obtener el id_cliente
+				String selectClienteSql = "SELECT id FROM Cliente WHERE usuario = ?";
+				PreparedStatement selectClienteStatement = ConexionBD.prepareStatement(selectClienteSql);
+				selectClienteStatement.setString(1, usuario);
+				ResultSet clienteResultSet = selectClienteStatement.executeQuery();
 
-	            String insertSql = "INSERT INTO carritodecompra (producto_id, cantidad, id_cliente) VALUES (?, ?, ?)";
-	            PreparedStatement insertStatement = ConexionBD.prepareStatement(insertSql);
-	            insertStatement.setInt(1, idProducto);
-	            insertStatement.setInt(2, cantidad);
-	            insertStatement.setInt(3, idCliente);
+				int idCliente = 0;
+				if (clienteResultSet.next()) {
+					idCliente = clienteResultSet.getInt("id");
+				}
 
-	            insertStatement.executeUpdate();
+				String insertSql = "INSERT INTO carritodecompra (producto_id, cantidad, id_cliente) VALUES (?, ?, ?)";
+				PreparedStatement insertStatement = ConexionBD.prepareStatement(insertSql);
+				insertStatement.setInt(1, idProducto);
+				insertStatement.setInt(2, cantidad);
+				insertStatement.setInt(3, idCliente);
 
-	            System.out.println("Producto agregado al carrito correctamente.");
-	        }
+				insertStatement.executeUpdate();
 
-	        ConexionBD.commit();
-	    } catch (SQLException e) {
-	        System.out.println("Error al agregar el producto al carrito: " + e.getMessage());
-	        ConexionBD.rollback();
-	    } finally {
-	        ConexionBD.closeConnection();
-	    }
+				Log log = new Log("Producto agregado al carrito correctamente.");
+
+			}
+
+			ConexionBD.commit();
+		} catch (SQLException e) {
+			Log log = new Log(Log.Tipo.ERROR, "Error al agregar el producto al carrito: " + e.getMessage());
+			ConexionBD.rollback();
+		} finally {
+			ConexionBD.closeConnection();
+		}
 	}
-
 
 	public static int generarIdCarrito() {
 		ConexionBD.openConnection();
@@ -87,7 +91,7 @@ public class CarritoDeCompraController {
 				idCarrito = resultSet.getInt("max_id") + 1;
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al generar el ID del carrito: " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR, "Error al generar el ID del carrito: " + e.getMessage());
 		} finally {
 			ConexionBD.closeConnection();
 		}
@@ -114,7 +118,7 @@ public class CarritoDeCompraController {
 				cantidad = resultSet.getString("cantidad");
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al obtener la cantidad del producto en el carrito: " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR, "Error al obtener la cantidad del producto en el carrito: " + e.getMessage());
 		} finally {
 			ConexionBD.closeConnection();
 		}
@@ -143,7 +147,7 @@ public class CarritoDeCompraController {
 				producto = new Producto(id, nombre, precio, descripcion, codigoBarras);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al obtener el producto: " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR, "Error al obtener el producto: " + e.getMessage());
 		} finally {
 			ConexionBD.closeConnection();
 		}
@@ -153,17 +157,15 @@ public class CarritoDeCompraController {
 
 	public static List<Producto> obtenerProductosCarrito(String usuario) {
 		ConexionBD.openConnection();
-	    List<Producto> productos = new ArrayList<>();
+		List<Producto> productos = new ArrayList<>();
 
-	    try {
-	        String sql = "SELECT c.producto_id, cl.id " +
-	                     "FROM carritodecompra c " +
-	                     "INNER JOIN cliente cl ON c.id_cliente = cl.id " +
-	                     "WHERE cl.usuario = ?";
-	        PreparedStatement selectStatement = ConexionBD.prepareStatement(sql);
-	        selectStatement.setString(1, usuario);
+		try {
+			String sql = "SELECT c.producto_id, cl.id " + "FROM carritodecompra c "
+					+ "INNER JOIN cliente cl ON c.id_cliente = cl.id " + "WHERE cl.usuario = ?";
+			PreparedStatement selectStatement = ConexionBD.prepareStatement(sql);
+			selectStatement.setString(1, usuario);
 
-	        ResultSet resultSet = selectStatement.executeQuery();
+			ResultSet resultSet = selectStatement.executeQuery();
 
 			while (resultSet.next()) {
 				int productoId = resultSet.getInt("producto_id");
@@ -171,7 +173,7 @@ public class CarritoDeCompraController {
 				productos.add(producto);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error al obtener los productos del carrito: " + e.getMessage());
+			Log log = new Log(Log.Tipo.ERROR, "Error al obtener los productos del carrito: " + e.getMessage());
 		} finally {
 			ConexionBD.closeConnection();
 		}
@@ -179,41 +181,39 @@ public class CarritoDeCompraController {
 		return productos;
 	}
 
-
 	public static void borrarCarrito(String usuario) {
-	    ConexionBD.openConnection();
+		ConexionBD.openConnection();
 
-	    try {
-	        // Obtener el idCliente usando el usuario
-	        String clienteSql = "SELECT id FROM cliente WHERE usuario = ?";
-	        PreparedStatement clienteStatement = ConexionBD.prepareStatement(clienteSql);
-	        clienteStatement.setString(1, usuario);
-	        ResultSet clienteResult = clienteStatement.executeQuery();
+		try {
+			// Obtener el idCliente usando el usuario
+			String clienteSql = "SELECT id FROM cliente WHERE usuario = ?";
+			PreparedStatement clienteStatement = ConexionBD.prepareStatement(clienteSql);
+			clienteStatement.setString(1, usuario);
+			ResultSet clienteResult = clienteStatement.executeQuery();
 
-	        int idCliente = -1;
+			int idCliente = -1;
 
-	        if (clienteResult.next()) {
-	            idCliente = clienteResult.getInt("id");
-	        } else {
-	            System.out.println("No se encontró un cliente con el usuario especificado.");
-	            return;
-	        }
+			if (clienteResult.next()) {
+				idCliente = clienteResult.getInt("id");
+			} else {
+				Log log = new Log("No se encontró un cliente con el usuario especificado.");
+				return;
+			}
 
-	        // Borrar el carrito asociado al idCliente
-	        String carritoSql = "DELETE FROM carritodecompra WHERE id_cliente = ?";
-	        PreparedStatement carritoStatement = ConexionBD.prepareStatement(carritoSql);
-	        carritoStatement.setInt(1, idCliente);
-	        carritoStatement.executeUpdate();
+			// Borrar el carrito asociado al idCliente
+			String carritoSql = "DELETE FROM carritodecompra WHERE id_cliente = ?";
+			PreparedStatement carritoStatement = ConexionBD.prepareStatement(carritoSql);
+			carritoStatement.setInt(1, idCliente);
+			carritoStatement.executeUpdate();
 
-	        ConexionBD.commit();
-	        System.out.println("Carrito borrado correctamente.");
-	    } catch (SQLException e) {
-	        System.out.println("Error al borrar el carrito: " + e.getMessage());
-	        ConexionBD.rollback();
-	    } finally {
-	        ConexionBD.closeConnection();
-	    }
+			ConexionBD.commit();
+			Log log = new Log("Carrito borrado correctamente.");
+		} catch (SQLException e) {
+			Log log = new Log(Log.Tipo.ERROR, "Error al borrar el carrito: " + e.getMessage());
+			ConexionBD.rollback();
+		} finally {
+			ConexionBD.closeConnection();
+		}
 	}
-
 
 }
