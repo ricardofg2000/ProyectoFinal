@@ -1,7 +1,9 @@
 package view.gestCompras;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -39,10 +41,13 @@ public class JDialogCarrito extends JDialog {
 	private JTextField textField;
 
 	public JDialogCarrito(String usuario) {
+		setResizable(false);
 		setTitle("Carrito de Compras");
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 550, 338);
+		setLocationRelativeTo(null);
+		setIconImage(new ImageIcon("images/tienda.png").getImage());
 
 		JsonController gest = new JsonController();
 		final String FILE_NAME = "recibo.json";
@@ -50,7 +55,13 @@ public class JDialogCarrito extends JDialog {
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(null);
 
-		tablaCarrito = new JTable();
+		tablaCarrito = new JTable() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
 		JScrollPane scrollPane = new JScrollPane(tablaCarrito);
 		scrollPane.setBounds(10, 5, 514, 258);
 		contentPane.add(scrollPane);
@@ -97,36 +108,44 @@ public class JDialogCarrito extends JDialog {
 		btnTramitarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-
-				int idCliente = ClientesController.obtenerIdCliente(usuario);
-				PedidosController.agregarPedido(idCliente);
-
-				// Preguntar si desea guardar el recibo
-				int saveOption = JOptionPane.showConfirmDialog(null, "¿Desea guardar el recibo?", "Guardar Recibo",
-						JOptionPane.YES_NO_OPTION);
-				if (saveOption == JOptionPane.YES_OPTION) {
-					List<Producto> productos = CarritoDeCompraController.obtenerProductosCarrito(usuario);
-					List<Map<String, Object>> productosConCantidad = new ArrayList<>();
-					for (Producto producto : productos) {
-						String cantidadString = CarritoDeCompraController.obtenerCantidadProducto(usuario,
-								producto.getId());
-						int cantidad = Integer.parseInt(cantidadString);
-						Map<String, Object> productoConCantidad = new HashMap<>();
-						productoConCantidad.put("producto", producto);
-						productoConCantidad.put("cantidad", cantidad);
-						productosConCantidad.add(productoConCantidad);
-					}
-					CarritoDeCompraController.borrarCarrito(usuario);
-					gest.writeJsonInFile(FILE_NAME, productosConCantidad);
-					JOptionPane.showMessageDialog(null, "Recibo guardado correctamente", "Éxito",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					CarritoDeCompraController.borrarCarrito(usuario);
-				}
-
+				tramitarPedido(usuario, gest);
 			}
 		});
-
 		setContentPane(contentPane);
+	}
+
+	private void tramitarPedido(String usuario, JsonController gest) {
+		int idCliente = ClientesController.obtenerIdCliente(usuario);
+		PedidosController.agregarPedido(idCliente);
+		guardarRecibo(usuario, gest);
+	}
+
+	private void guardarRecibo(String usuario, JsonController gest) {
+		int saveOption = JOptionPane.showConfirmDialog(null, "¿Desea guardar el recibo?", "Guardar Recibo",
+				JOptionPane.YES_NO_OPTION);
+		if (saveOption == JOptionPane.YES_OPTION) {
+			List<Producto> productos = CarritoDeCompraController.obtenerProductosCarrito(usuario);
+			List<Map<String, Object>> productosConCantidad = new ArrayList<>();
+			for (Producto producto : productos) {
+				String cantidadString = CarritoDeCompraController.obtenerCantidadProducto(usuario, producto.getId());
+				int cantidad = Integer.parseInt(cantidadString);
+				Map<String, Object> productoConCantidad = new HashMap<>();
+				productoConCantidad.put("producto", producto);
+				productoConCantidad.put("cantidad", cantidad);
+				productosConCantidad.add(productoConCantidad);
+			}
+
+			JFileChooser jfc = new JFileChooser();
+
+			int returnValue = jfc.showSaveDialog(null);
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				System.out.println("You selected the directory: " + jfc.getSelectedFile().toString() + ".json");
+
+				gest.writeJsonInFile(jfc.getSelectedFile().toString() + ".json", productosConCantidad);
+				JOptionPane.showMessageDialog(null, "Recibo guardado correctamente", "Éxito",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+
+		}
 	}
 }

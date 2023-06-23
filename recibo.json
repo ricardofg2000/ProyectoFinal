@@ -1,11 +1,21 @@
 [
   {
     "producto": {
-      "id": 8,
-      "nombre": "Bose QuietComfort 35 II",
-      "precio": 349.99,
-      "descripcion": "Auriculares con cancelación de ruido",
-      "codigoBarras": "8901234567"
+      "id": 6,
+      "nombre": "Apple MacBook Pro",
+      "precio": 1799.99,
+      "descripcion": "Potente laptop para profesionales",
+      "codigoBarras": "6789012345"
+    },
+    "cantidad": 2
+  },
+  {
+    "producto": {
+      "id": 7,
+      "nombre": "Canon EOS R5",
+      "precio": 3499.99,
+      "descripcion": "Cámara digital profesional",
+      "codigoBarras": "7890123456"
     },
     "cantidad": 2
   }

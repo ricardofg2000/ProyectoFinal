@@ -15,20 +15,7 @@ import java.awt.event.ActionEvent;
 public class FrmAdministrador extends JFrame {
 
     private JPanel contentPane;
-/*
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                	FrmAdministrador frame = new FrmAdministrador();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-*/
+
     public FrmAdministrador() {
     	setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

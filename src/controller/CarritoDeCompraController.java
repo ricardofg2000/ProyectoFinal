@@ -46,7 +46,7 @@ public class CarritoDeCompraController {
 	            selectClienteStatement.setString(1, usuario);
 	            ResultSet clienteResultSet = selectClienteStatement.executeQuery();
 
-	            int idCliente = 0; // Valor predeterminado si no se encuentra el cliente
+	            int idCliente = 0;
 	            if (clienteResultSet.next()) {
 	                idCliente = clienteResultSet.getInt("id");
 	            }

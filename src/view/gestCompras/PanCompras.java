@@ -27,13 +27,18 @@ public class PanCompras extends JPanel {
     public PanCompras(String usuario) {
         setLayout(new BorderLayout());
 
-        tableProductos = new JTable();
+        tableProductos = new JTable() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
         JScrollPane scrollPane = new JScrollPane(tableProductos);
         add(scrollPane, BorderLayout.CENTER);
 
         List<Producto> productos = ProductosController.listadoProductos();
-        int idCarrito = CarritoDeCompraController.generarIdCarrito();
-        
+
         crearTablaProductos(productos);
 
         carrito = new CarritoDeCompra();
@@ -52,22 +57,20 @@ public class PanCompras extends JPanel {
             }
         });
 
-
         btnVerCarrito.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JDialogCarrito dialogCarrito = new JDialogCarrito(usuario);
-                dialogCarrito.setVisible(true);
+                mostrarCarrito(usuario);
             }
         });
     }
 
-	private void crearTablaProductos(List<Producto> productos) {
-		String[] columnas = { "ID", "Nombre", "Precio", "Descripción", "Código de Barras" };
+    private void crearTablaProductos(List<Producto> productos) {
+        String[] columnas = { "ID", "Nombre", "Precio", "Descripción", "Código de Barras" };
         DefaultTableModel tabla = new DefaultTableModel(columnas, 0);
 
         for (Producto producto : productos) {
-            Object[] fila = { producto.getId(),
-                    producto.getNombre(), producto.getPrecio(), producto.getDescripcion(), producto.getCodigoBarras() };
+            Object[] fila = { producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getDescripcion(),
+                    producto.getCodigoBarras() };
             tabla.addRow(fila);
         }
 
@@ -75,10 +78,10 @@ public class PanCompras extends JPanel {
         tableProductos.getColumnModel().getColumn(0).setMaxWidth(0);
         tableProductos.getColumnModel().getColumn(0).setMinWidth(0);
         tableProductos.getColumnModel().getColumn(0).setPreferredWidth(0);
-	}
+    }
 
-	private void agregarCarrito(String usuario) {
-		int filaSeleccionada = tableProductos.getSelectedRow();
+    private void agregarCarrito(String usuario) {
+        int filaSeleccionada = tableProductos.getSelectedRow();
         if (filaSeleccionada >= 0) {
             int id = (int) tableProductos.getValueAt(filaSeleccionada, 0);
             String nombre = (String) tableProductos.getValueAt(filaSeleccionada, 1);
@@ -88,7 +91,8 @@ public class PanCompras extends JPanel {
 
             Producto producto = new Producto(id, nombre, precio, descripcion, codigoBarras);
 
-            String cantidadString = JOptionPane.showInputDialog("Ingrese la cantidad:", CarritoDeCompraController.obtenerCantidadProducto(usuario, producto.getId()));
+            String cantidadString = JOptionPane.showInputDialog("Ingrese la cantidad:",
+                    CarritoDeCompraController.obtenerCantidadProducto(usuario, producto.getId()));
             if (cantidadString != null) {
                 try {
                     int cantidad = Integer.parseInt(cantidadString);
@@ -97,11 +101,18 @@ public class PanCompras extends JPanel {
 
                     JOptionPane.showMessageDialog(null, "Producto agregado al carrito correctamente.");
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "La cantidad ingresada no es válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "La cantidad ingresada no es válida.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un producto de la lista.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Seleccione un producto de la lista.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void mostrarCarrito(String usuario) {
+		JDialogCarrito dialogCarrito = new JDialogCarrito(usuario);
+        dialogCarrito.setVisible(true);
 	}
 }

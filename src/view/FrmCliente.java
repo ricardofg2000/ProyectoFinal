@@ -10,6 +10,7 @@ import view.gestCompras.JDialogCarrito;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
@@ -22,9 +23,12 @@ public class FrmCliente extends JFrame {
 	private static FrmCliente frame;
 
 	public FrmCliente(String usuario) {
+		setTitle("Mark&GO");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 591, 436);
+		setLocationRelativeTo(null);
+		setIconImage(new ImageIcon("images/tienda.png").getImage());
 
 		contentPane = new PanBienvenida();
 		setContentPane(contentPane);
@@ -41,8 +45,15 @@ public class FrmCliente extends JFrame {
 				mostrarPanelProductos(usuario);
 			}
 		});
+		JMenuItem mntmVerCarrito = new JMenuItem("Ver Carrito");
+		mntmVerCarrito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mostrarCarrito(usuario);
+			}
+		});
 		mnPaginaPrincipal.add(mntmListadoProductos);
-
+		mnPaginaPrincipal.add(mntmVerCarrito);
+		
 		setVisible(true);
 	}
 
@@ -51,5 +62,10 @@ public class FrmCliente extends JFrame {
 		contentPane.add(new view.gestCompras.PanCompras(usuario), BorderLayout.CENTER);
 		revalidate();
 		repaint();
+	}
+	
+	private void mostrarCarrito(String usuario) {
+		JDialogCarrito dialogCarrito = new JDialogCarrito(usuario);
+        dialogCarrito.setVisible(true);
 	}
 }

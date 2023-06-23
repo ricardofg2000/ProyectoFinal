@@ -141,7 +141,6 @@ public class ClientesController {
 		} finally {
 			ConexionBD.closeConnection();
 		}
-		System.out.println(idCliente);//Borrar
 		return idCliente;
 	}
 

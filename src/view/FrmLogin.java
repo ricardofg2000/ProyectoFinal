@@ -90,7 +90,6 @@ public class FrmLogin extends JFrame {
 	private void iniciarSesion() {
 		String usuario = campoTextoUsuario.getText();
 		String contrasena = new String(campoTextoContrasena.getPassword());
-		System.out.println(ClientesController.validarCredenciales(usuario, contrasena));
 		switch (ClientesController.validarCredenciales(usuario, contrasena)) {
 		case 0:
 			JOptionPane.showMessageDialog(contentPane, "Credenciales inválidas. Intente nuevamente.");
@@ -106,7 +105,6 @@ public class FrmLogin extends JFrame {
 
 	private void mostrarVentanaCliente(String usuario) {
 		dispose();
-
 		FrmCliente nuevaVentana = new FrmCliente(usuario);
 		nuevaVentana.setVisible(true);
 	}
