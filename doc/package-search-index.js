@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"bdm"},{"l":"controller"},{"l":"model"},{"l":"start"},{"l":"view"},{"l":"view.gestClientes"},{"l":"view.gestCompras"},{"l":"view.gestProductos"}];updateSearchResults();

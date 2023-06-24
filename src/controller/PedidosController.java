@@ -7,73 +7,88 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * La clase PedidosController proporciona métodos para agregar pedidos y obtener información relacionada con los pedidos.
+ */
 public class PedidosController {
-	public static int agregarPedido(int idCliente) {
-		int idPedido = -1;
 
-		java.util.Date fechaActual = new java.util.Date();
-		java.sql.Timestamp fechaPedido = new java.sql.Timestamp(fechaActual.getTime());
+    /**
+     * Agrega un pedido para un cliente específico.
+     *
+     * @param idCliente el ID del cliente
+     * @return el ID del pedido agregado, o -1 si ocurre un error
+     */
+    public static int agregarPedido(int idCliente) {
+        int idPedido = -1;
 
-		ConexionBD.openConnection();
+        java.util.Date fechaActual = new java.util.Date();
+        java.sql.Timestamp fechaPedido = new java.sql.Timestamp(fechaActual.getTime());
 
-		try {
-			// Consulta para obtener el idCarrito usando el idCliente
-			String carritoSql = "SELECT id FROM carritodecompra WHERE id_cliente = ?";
-			PreparedStatement carritoStatement = ConexionBD.prepareStatement(carritoSql);
-			carritoStatement.setInt(1, idCliente);
-			ResultSet carritoResult = carritoStatement.executeQuery();
+        ConexionBD.openConnection();
 
-			int idCarrito = -1;
+        try {
+            // Consulta para obtener el idCarrito usando el idCliente
+            String carritoSql = "SELECT id FROM carritodecompra WHERE id_cliente = ?";
+            PreparedStatement carritoStatement = ConexionBD.prepareStatement(carritoSql);
+            carritoStatement.setInt(1, idCliente);
+            ResultSet carritoResult = carritoStatement.executeQuery();
 
-			if (carritoResult.next()) {
-				idCarrito = carritoResult.getInt("id");
-			} else {
-				Log log = new Log("No se encontró un carrito asociado al cliente.");
-				return idPedido;
-			}
+            int idCarrito = -1;
 
-			// Inserción del pedido con el idCarrito obtenido
-			String pedidoSql = "INSERT INTO Pedidos (idCarrito, idCliente, fechaPedido) VALUES (?, ?, ?)";
-			PreparedStatement pedidoStatement = ConexionBD.prepareStatement(pedidoSql);
+            if (carritoResult.next()) {
+                idCarrito = carritoResult.getInt("id");
+            } else {
+                Log log = new Log("No se encontró un carrito asociado al cliente.");
+                return idPedido;
+            }
 
-			pedidoStatement.setInt(1, idCarrito);
-			pedidoStatement.setInt(2, idCliente);
-			pedidoStatement.setTimestamp(3, fechaPedido);
+            // Inserción del pedido con el idCarrito obtenido
+            String pedidoSql = "INSERT INTO Pedidos (idCarrito, idCliente, fechaPedido) VALUES (?, ?, ?)";
+            PreparedStatement pedidoStatement = ConexionBD.prepareStatement(pedidoSql);
 
-			pedidoStatement.executeUpdate();
+            pedidoStatement.setInt(1, idCarrito);
+            pedidoStatement.setInt(2, idCliente);
+            pedidoStatement.setTimestamp(3, fechaPedido);
 
-			ConexionBD.commit();
-			idPedido = obtenerUltimoIdPedido();
-			Log log = new Log("Pedido agregado correctamente. ID del pedido: " + idPedido);
-		} catch (SQLException e) {
-			Log log = new Log(Log.Tipo.ERROR, "Error al agregar el pedido: " + e.getMessage());
-			ConexionBD.rollback();
-		} finally {
-			ConexionBD.closeConnection();
-		}
+            pedidoStatement.executeUpdate();
 
-		return idPedido;
-	}
+            ConexionBD.commit();
+            idPedido = obtenerUltimoIdPedido();
+            Log log = new Log("Pedido agregado correctamente. ID del pedido: " + idPedido);
+        } catch (SQLException e) {
+            Log log = new Log(Log.Tipo.ERROR, "Error al agregar el pedido: " + e.getMessage());
+            ConexionBD.rollback();
+        } finally {
+            ConexionBD.closeConnection();
+        }
 
-	public static int obtenerUltimoIdPedido() {
-		int idPedido = -1;
+        return idPedido;
+    }
 
-		ConexionBD.openConnection();
+    /**
+     * Obtiene el último ID de pedido registrado en la base de datos.
+     *
+     * @return el último ID de pedido, o -1 si ocurre un error
+     */
+    public static int obtenerUltimoIdPedido() {
+        int idPedido = -1;
 
-		try {
-			String sql = "SELECT MAX(id) FROM Pedidos";
-			ResultSet resultSet = ConexionBD.query(sql);
-			if (resultSet.next()) {
-				idPedido = resultSet.getInt(1);
-			}
-			ConexionBD.commit();
-		} catch (SQLException e) {
-			Log log = new Log(Log.Tipo.ERROR, "Error al obtener el último ID de pedido: " + e.getMessage());
-			ConexionBD.rollback();
-		} finally {
-			ConexionBD.closeConnection();
-		}
+        ConexionBD.openConnection();
 
-		return idPedido;
-	}
+        try {
+            String sql = "SELECT MAX(id) FROM Pedidos";
+            ResultSet resultSet = ConexionBD.query(sql);
+            if (resultSet.next()) {
+                idPedido = resultSet.getInt(1);
+            }
+            ConexionBD.commit();
+        } catch (SQLException e) {
+            Log log = new Log(Log.Tipo.ERROR, "Error al obtener el último ID de pedido: " + e.getMessage());
+            ConexionBD.rollback();
+        } finally {
+            ConexionBD.closeConnection();
+        }
+
+        return idPedido;
+    }
 }

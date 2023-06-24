@@ -13,17 +13,23 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * La clase FrmAdministrador representa la ventana principal del panel de control del administrador.
+ */
 public class FrmAdministrador extends JFrame {
 
     private JPanel contentPane;
 
+    /**
+     * Crea una nueva instancia de la ventana del administrador.
+     */
     public FrmAdministrador() {
-    	setTitle("Panel de Control Mark&GO");
-    	setResizable(false);
+        setTitle("Panel de Control Mark&GO");
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 810, 420);
         setLocationRelativeTo(null);
-		setIconImage(new ImageIcon("images/administrador.png").getImage());
+        setIconImage(new ImageIcon("images/administrador.png").getImage());
 
         contentPane = new PanBienvenida();
         setContentPane(contentPane);
@@ -58,7 +64,4 @@ public class FrmAdministrador extends JFrame {
         
         setVisible(true);
     }
-    
-    
-
 }

@@ -9,8 +9,14 @@ import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import java.awt.Color;
 
+/**
+ * La clase PanBienvenida representa un panel de bienvenida con una imagen centrada.
+ */
 public class PanBienvenida extends JPanel {
 
+	/**
+	 * Crea una nueva instancia del panel de bienvenida.
+	 */
 	public PanBienvenida() {
 		setLayout(new BorderLayout());
 

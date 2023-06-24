@@ -10,6 +10,9 @@ import javax.swing.JTextField;
 import model.Producto;
 import start.Log;
 
+/**
+ * La clase JDialogFormProductos es un diálogo que muestra un formulario para editar un producto.
+ */
 public class JDialogFormProductos extends JDialog {
 
     private JTextField textFieldNombre;
@@ -19,6 +22,11 @@ public class JDialogFormProductos extends JDialog {
 
     private Producto producto;
 
+    /**
+     * Crea un nuevo diálogo de formulario de productos.
+     *
+     * @param producto el producto a editar
+     */
     public JDialogFormProductos(Producto producto) {
         setResizable(false);
         this.producto = producto;
@@ -86,14 +94,17 @@ public class JDialogFormProductos extends JDialog {
         panel.add(cancelButton);
         cancelButton.addActionListener(e -> dispose());
 
-        
-        
         textFieldNombre.setText(producto.getNombre());
         textFieldPrecio.setText(String.valueOf(producto.getPrecio()));
         textFieldDescripcion.setText(producto.getDescripcion());
         textFieldCodigoBarras.setText(producto.getCodigoBarras());
     }
 
+    /**
+     * Valida los campos del formulario.
+     *
+     * @return true si los campos son válidos, false de lo contrario
+     */
     private boolean validarCampos() {
         String nombre = textFieldNombre.getText().trim();
         if (nombre.isEmpty()) {
@@ -117,6 +128,9 @@ public class JDialogFormProductos extends JDialog {
         return true;
     }
 
+    /**
+     * Actualiza los datos del producto con los valores ingresados en el formulario.
+     */
     private void actualizarProducto() {
         producto.setNombre(textFieldNombre.getText());
         producto.setPrecio(Double.parseDouble(textFieldPrecio.getText()));
@@ -124,6 +138,11 @@ public class JDialogFormProductos extends JDialog {
         producto.setCodigoBarras(textFieldCodigoBarras.getText());
     }
 
+    /**
+     * Muestra el diálogo y espera a que el usuario interactúe con él.
+     *
+     * @return el producto actualizado
+     */
     public Producto showDialog() {
         setVisible(true);
         return producto;

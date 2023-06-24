@@ -3,10 +3,7 @@ package view.gestCompras;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,11 +17,19 @@ import controller.ProductosController;
 import model.Producto;
 import model.CarritoDeCompra;
 
+/**
+ * La clase PanCompras representa un panel que muestra una lista de productos y permite al usuario agregar productos al carrito de compra.
+ */
 public class PanCompras extends JPanel {
 
     private JTable tableProductos;
     private CarritoDeCompra carrito;
 
+    /**
+     * Crea un nuevo panel de compras.
+     *
+     * @param usuario el nombre de usuario
+     */
     public PanCompras(String usuario) {
         setLayout(new BorderLayout());
 
@@ -65,6 +70,11 @@ public class PanCompras extends JPanel {
         });
     }
 
+    /**
+     * Crea la tabla de productos.
+     *
+     * @param productos la lista de productos
+     */
     private void crearTablaProductos(List<Producto> productos) {
         String[] columnas = { "ID", "Nombre", "Precio", "Descripción", "Código de Barras" };
         DefaultTableModel tabla = new DefaultTableModel(columnas, 0);
@@ -86,6 +96,11 @@ public class PanCompras extends JPanel {
         tableProductos.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
     }
 
+    /**
+     * Agrega un producto al carrito.
+     *
+     * @param usuario el nombre de usuario
+     */
     private void agregarCarrito(String usuario) {
         int filaSeleccionada = tableProductos.getSelectedRow();
         if (filaSeleccionada >= 0) {
@@ -117,8 +132,13 @@ public class PanCompras extends JPanel {
         }
     }
 
+    /**
+     * Muestra el carrito de compra.
+     *
+     * @param usuario el nombre de usuario
+     */
     private void mostrarCarrito(String usuario) {
-		JDialogCarrito dialogCarrito = new JDialogCarrito(usuario);
+        JDialogCarrito dialogCarrito = new JDialogCarrito(usuario);
         dialogCarrito.setVisible(true);
-	}
+    }
 }

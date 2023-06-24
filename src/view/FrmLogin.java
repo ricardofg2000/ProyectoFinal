@@ -10,13 +10,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+/**
+ * La clase FrmLogin representa la ventana de inicio de sesión de la aplicación.
+ */
 public class FrmLogin extends JFrame {
 
+    /** El panel de contenido. */
     private JPanel contentPane;
+    
+    /** El campo de texto de usuario. */
     private JTextField campoTextoUsuario;
+    
+    /** El campo de texto de contraseña. */
     private JPasswordField campoTextoContrasena;
+    
+    /** El botón de iniciar sesión. */
     private JButton btnIniciarSesion;
 
+    /**
+     * Crea una nueva instancia de FrmLogin.
+     */
     public FrmLogin() {
         setTitle("Inicio de sesión");
         setResizable(false);
@@ -100,6 +113,9 @@ public class FrmLogin extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Inicia sesión.
+     */
     private void iniciarSesion() {
         String usuario = campoTextoUsuario.getText();
         String contrasena = new String(campoTextoContrasena.getPassword());
@@ -116,12 +132,20 @@ public class FrmLogin extends JFrame {
         }
     }
 
+    /**
+     * Muestra la ventana del cliente.
+     *
+     * @param usuario el usuario
+     */
     private void mostrarVentanaCliente(String usuario) {
         dispose();
         FrmCliente nuevaVentana = new FrmCliente(usuario);
         nuevaVentana.setVisible(true);
     }
 
+    /**
+     * Muestra la ventana del administrador.
+     */
     private void mostrarVentanaAdmin() {
         dispose();
 

@@ -2,6 +2,3 @@
 [23/06/2023 13:44:30]: Este es un mensaje de error de prueba
 [23/06/2023 13:45:35]: Este es un mensaje de error de prueba
 [23/06/2023 13:46:39]: Este es un mensaje de error de prueba
-[23/06/2023 14:03:04]: Este es un mensaje de error de prueba
-[23/06/2023 14:09:06]: Este es un mensaje de error de prueba
-[23/06/2023 14:10:18]: Este es un mensaje de error de prueba

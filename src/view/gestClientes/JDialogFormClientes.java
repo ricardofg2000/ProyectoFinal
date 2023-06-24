@@ -10,6 +10,9 @@ import javax.swing.JTextField;
 import model.Cliente;
 import start.Log;
 
+/**
+ * La clase JDialogFormClientes representa un diálogo para editar los detalles de un cliente.
+ */
 public class JDialogFormClientes extends JDialog {
 
     private JTextField textFieldNombre;
@@ -17,10 +20,14 @@ public class JDialogFormClientes extends JDialog {
     private JTextField textFieldContrasena;
     private JTextField textFieldTelefono;
     private JTextField textFieldDireccion;
-
     private Cliente cliente;
     private boolean camposCompletos;
 
+    /**
+     * Crea un nuevo JDialogFormClientes.
+     *
+     * @param cliente el cliente a editar
+     */
     public JDialogFormClientes(Cliente cliente) {
         setResizable(false);
         this.cliente = cliente;
@@ -85,20 +92,18 @@ public class JDialogFormClientes extends JDialog {
         okButton.setBounds(206, 161, 89, 23);
         panel.add(okButton);
         okButton.addActionListener(e -> {
-            if (validarCampos()) { 
+            if (validarCampos()) {
                 actualizarCliente();
                 Log log = new Log("Cliente actualizado exitosamente.");
                 dispose();
             }
         });
 
-        JButton cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Cancelar");
         cancelButton.setBounds(305, 161, 89, 23);
         panel.add(cancelButton);
         cancelButton.addActionListener(e -> dispose());
 
-        
-        
         textFieldNombre.setText(cliente.getNombre());
         textFieldUsuario.setText(cliente.getUsuario());
         textFieldContrasena.setText(cliente.getContrasena());
@@ -106,6 +111,11 @@ public class JDialogFormClientes extends JDialog {
         textFieldDireccion.setText(cliente.getDireccion());
     }
 
+    /**
+     * Valida los campos del formulario.
+     *
+     * @return true si los campos son válidos, false en caso contrario
+     */
     private boolean validarCampos() {
         String nombre = textFieldNombre.getText().trim();
         String usuario = textFieldUsuario.getText().trim();
@@ -120,6 +130,9 @@ public class JDialogFormClientes extends JDialog {
         return true;
     }
 
+    /**
+     * Actualiza los datos del cliente con los valores ingresados en el formulario.
+     */
     private void actualizarCliente() {
         cliente.setNombre(textFieldNombre.getText());
         cliente.setUsuario(textFieldUsuario.getText());
@@ -128,6 +141,11 @@ public class JDialogFormClientes extends JDialog {
         cliente.setDireccion(textFieldDireccion.getText());
     }
 
+    /**
+     * Muestra el JDialog y espera a que el usuario lo cierre.
+     *
+     * @return el cliente editado
+     */
     public Cliente showDialog() {
         setVisible(true);
         return cliente;
